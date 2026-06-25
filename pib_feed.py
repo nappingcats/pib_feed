@@ -116,7 +116,7 @@ FEEDS = [
         "desc": "Unofficial English feed of PIB features.",
         "mode": "year",
         "max_items": 250,
-        "listing": BASE + "/ViewFeatures.aspx?MenuId=32&reg=48&lang=1",
+        "listing": BASE + "/ViewFeatures.aspx?MenuId=471&reg=48&lang=1",
         "id_re": r"FeaturesDeatils\.aspx\?NoteId=(\d+)&ModuleId=2",
         "detail": BASE + "/FeaturesDeatils.aspx?NoteId={id}&ModuleId=2",
         "permalink": BASE + "/FeaturesDeatils.aspx?NoteId={id}&ModuleId=2",
