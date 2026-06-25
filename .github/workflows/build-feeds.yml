@@ -1,0 +1,62 @@
+name: Build PIB RSS feeds
+
+on:
+  schedule:
+    # Press releases move fast; the rest are infrequent. Hourly covers both.
+    - cron: "17 * * * *"
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - pib_feed.py
+      - .github/workflows/build-feeds.yml
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build feeds
+        env:
+          PIB_WORKERS: "10"
+          # Merge with the already-published feeds so history is retained beyond
+          # the scan window. Each feed reads <base>/<key>/feed.xml.
+          PIB_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+        run: python pib_feed.py
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
