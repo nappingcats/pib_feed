@@ -37,6 +37,9 @@ import requests
 
 BASE = "https://www.pib.gov.in"
 ALLREL = BASE + "/allRel.aspx"
+# Homepage listing; still renders recent PRIDs as plain links (allRel.aspx no
+# longer does — it became a POST-driven form).
+LATEST_SRC = BASE + "/indexd.aspx"
 IFRAME = BASE + "/PressReleaseIframePage.aspx?PRID={id}"
 PR_PERMALINK = BASE + "/PressReleasePage.aspx?PRID={id}"
 
@@ -283,11 +286,12 @@ def list_year(session: requests.Session, feed: dict, year: int) -> set[int]:
 
 
 def get_latest_prid(session: requests.Session) -> int:
-    body = fetch(session, ALLREL) or ""
-    prids = [int(x) for x in re.findall(r"PRID=(\d+)", body)]
-    if not prids:
-        raise SystemExit("Could not determine latest PRID from allRel.aspx")
-    return max(prids)
+    for src in (LATEST_SRC, ALLREL):
+        body = fetch(session, src) or ""
+        prids = [int(x) for x in re.findall(r"PRID=(\d+)", body)]
+        if prids:
+            return max(prids)
+    raise SystemExit("Could not determine latest PRID from any listing")
 
 
 # --- per-feed scrape ----------------------------------------------------------
