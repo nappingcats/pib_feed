@@ -4,16 +4,16 @@ Six self-hosted, consolidated **English RSS feeds** of
 [Press Information Bureau](https://www.pib.gov.in) (Government of India) content,
 each with **full article bodies**:
 
-| Feed | What | Path |
-|------|------|------|
-| Press Releases | all English press releases | [`press_releases/feed.xml`](https://nappingcats.github.io/pib_feed/press_releases/feed.xml) |
-| PMO | Prime Minister's Office releases | [`pmo/feed.xml`](https://nappingcats.github.io/pib_feed/pmo/feed.xml) |
-| Backgrounders | in-depth explainers | [`backgrounders/feed.xml`](https://nappingcats.github.io/pib_feed/backgrounders/feed.xml) |
-| Factsheets | concise fact briefs | [`factsheets/feed.xml`](https://nappingcats.github.io/pib_feed/factsheets/feed.xml) |
-| Features | editorial features | [`features/feed.xml`](https://nappingcats.github.io/pib_feed/features/feed.xml) |
-| FAQs | explainer Q&As | [`faqs/feed.xml`](https://nappingcats.github.io/pib_feed/faqs/feed.xml) |
+| Feed | What | GitHub Pages | GitLab Pages |
+|------|------|------|------|
+| Press Releases | all English press releases | [feed.xml](https://nappingcats.github.io/pib_feed/press_releases/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/press_releases/feed.xml) |
+| PMO | Prime Minister's Office releases | [feed.xml](https://nappingcats.github.io/pib_feed/pmo/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/pmo/feed.xml) |
+| Backgrounders | in-depth explainers | [feed.xml](https://nappingcats.github.io/pib_feed/backgrounders/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/backgrounders/feed.xml) |
+| Factsheets | concise fact briefs | [feed.xml](https://nappingcats.github.io/pib_feed/factsheets/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/factsheets/feed.xml) |
+| Features | editorial features | [feed.xml](https://nappingcats.github.io/pib_feed/features/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/features/feed.xml) |
+| FAQs | explainer Q&As | [feed.xml](https://nappingcats.github.io/pib_feed/faqs/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/faqs/feed.xml) |
 
-Landing page: https://nappingcats.github.io/pib_feed/
+The public landing page is intentionally blank; use the direct feed links above.
 
 ## Why this exists
 
