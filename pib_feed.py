@@ -420,22 +420,11 @@ def write_feed(feed: dict, xml: str, count: int) -> None:
 
 
 def write_landing(counts: dict[str, int]) -> None:
+    # Intentionally a blank white page: the feed list is not exposed publicly.
+    # The per-feed pages and feed.xml files remain reachable by direct link.
     os.makedirs(OUT_DIR, exist_ok=True)
-    rows = "".join(
-        f"<li><a href='{f['key']}/feed.xml'>{escape(f['title'])}</a> "
-        f"— {escape(f['desc'])} ({counts.get(f['key'], 0)} items)</li>"
-        for f in FEEDS
-    )
     with open(os.path.join(OUT_DIR, "index.html"), "w", encoding="utf-8") as f:
-        f.write(
-            "<!doctype html><meta charset='utf-8'>"
-            "<title>PIB unofficial English RSS feeds</title>"
-            "<h1>PIB — unofficial English RSS feeds</h1>"
-            "<p>Full-text English feeds reconstructed from "
-            "<a href='https://www.pib.gov.in'>pib.gov.in</a>, which has no usable "
-            "official RSS for English content.</p>"
-            f"<ul>{rows}</ul>"
-        )
+        f.write("<!doctype html><meta charset='utf-8'><title></title>")
 
 
 # --- main ---------------------------------------------------------------------
