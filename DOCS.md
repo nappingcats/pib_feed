@@ -166,3 +166,90 @@ AIR feeds in one run (a single GitHub Pages deployment serves all of them).
 - The `/api/newsonair` window is the latest 100 items only — depth comes from
   history-merge over successive hourly runs.
 - Unofficial and unaffiliated; content © Prasar Bharati / All India Radio.
+
+---
+
+# Current-affairs PDF feeds — Vision IAS, Made Easy, NextIAS (unofficial)
+
+RSS feeds for coaching current-affairs compilations that publish **only PDFs**
+and no RSS. Built by `visioniaspt365.py` (Vision IAS) and `meca.py` (Made Easy +
+NextIAS). Each item's body links the PDF; from 2024 onward the PDFs are also
+**archived** (see below).
+
+| Feed | What | GitHub Pages |
+|------|------|------|
+| Vision IAS PT 365 | PT 365 current-affairs PDFs | [feed.xml](https://nappingcats.github.io/pib_feed/visionias_pt365/feed.xml) |
+| Vision IAS Mains 365 | Mains 365 current-affairs PDFs | [feed.xml](https://nappingcats.github.io/pib_feed/visionias_mains365/feed.xml) |
+| Made Easy Weekly CA | weekly current-affairs (via download form) | [feed.xml](https://nappingcats.github.io/pib_feed/madeeasy_weekly/feed.xml) |
+| NextIAS Monthly CA | monthly current-affairs magazine PDFs | [feed.xml](https://nappingcats.github.io/pib_feed/nextias_magazine/feed.xml) |
+
+## How it works
+
+- **Vision IAS** (`visioniaspt365.py`) — the PT 365 / Mains 365 listing pages
+  are Livewire-rendered with no PDF links, but each document's detail page
+  (`/current-affairs/downloads/<section>/<id>`) embeds a direct CloudFront PDF
+  URL even anonymously. The script walks the listing, reads each document's
+  title + PDF URL, and emits an item per document.
+- **Made Easy** (`meca.py`) — weekly PDFs sit behind a lead-capture form
+  (`/madeeasyform/?pd=…&ft=…`) that can't be fetched programmatically, so items
+  link to that form page (the PDF isn't archived).
+- **NextIAS** (`meca.py`) — monthly magazines are served as direct PDF links, so
+  items link (and `<enclosure>`) the PDF. Only the latest couple of months
+  appear in static HTML; the feed fills in over time via history-merge.
+
+All feeds merge their previously-published copy to retain history.
+
+## PDF archival (GitHub Releases)
+
+The PDFs are large (Vision ~25 MB/doc, NextIAS ~45 MB/magazine), so committing
+them into the repo is a bad fit: a **GitHub Pages published site is capped at
+1 GB** and repos are recommended under 1 GB, and git history would keep every
+version forever. Instead they are mirrored as **GitHub Release assets** (up to
+2 GB/file, not counted against repo or Pages size, no history bloat):
+
+1. In archive mode (`*_ARCHIVE_MODE=archive`), the feed scripts write
+   `archive/<key>.json` manifests of `{name, url}` for each archivable PDF and
+   point feed items at `…/releases/download/pdf-archive/<name>`.
+2. `archive_pdfs.py` reads the manifests, and for any asset not already on the
+   `pdf-archive` release, downloads the source PDF and uploads it (deleting the
+   temp file after). It is idempotent — already-archived PDFs are skipped.
+
+Only PDFs published in **`ARCHIVE_MIN_YEAR` (default 2024) or later** are fed and
+archived, which bounds the archive; future years (2027, 2028, …) are included
+automatically. PDFs are renamed for archival, e.g.
+`visionias_pt-365_2026-05_species-in-news_13707.pdf`,
+`nextias_monthly-current-affairs-may-2026.pdf`.
+
+## Configuration (env vars)
+
+| Var | Default | Meaning |
+|-----|---------|---------|
+| `ARCHIVE_MIN_YEAR` | `2024` | Feed/archive only items from this year onward |
+| `VIS_ARCHIVE_MODE` / `MECA_ARCHIVE_MODE` | `link` | `link` (item → source PDF) or `archive` (item → release asset + write manifest) |
+| `VIS_ARCHIVE_BASE_URL` / `MECA_ARCHIVE_BASE_URL` | – | Release download base, e.g. `https://github.com/<owner>/<repo>/releases/download/pdf-archive` |
+| `VIS_PUBLISHED_BASE_URL` / `MECA_PUBLISHED_BASE_URL` | – | Live-site base for history-merge |
+| `VIS_MAX_FETCH` | `80` | Vision document window per feed |
+| `ARCHIVE_MANIFEST_DIR` | `archive` | Where the manifests are written |
+| `ARCHIVE_RELEASE_TAG` | `pdf-archive` | Release tag the assets live under |
+
+## Local run
+
+```bash
+pip install -r requirements.txt
+# feeds only (link to source PDFs, no archival):
+VIS_MAX_FETCH=15 python visioniaspt365.py
+python meca.py
+# with archival (needs gh authenticated; uploads to the pdf-archive release):
+VIS_ARCHIVE_MODE=archive VIS_ARCHIVE_BASE_URL=https://github.com/<owner>/<repo>/releases/download/pdf-archive python visioniaspt365.py
+python archive_pdfs.py
+```
+
+## Caveats
+
+- Depends on Vision's CloudFront-embedding detail pages, NextIAS's direct PDF
+  paths, and Made Easy's listing markup; any redesign may need selector updates.
+- Vision documents whose title lacks a detectable year are skipped (can't tell
+  if they're ≥ `ARCHIVE_MIN_YEAR`).
+- Made Easy PDFs are never archived (form-gated) — those items are link-only.
+- Unofficial and unaffiliated; PDFs © their respective publishers. Archived
+  copies are mirrors for feed durability.

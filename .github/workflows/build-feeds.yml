@@ -1,4 +1,4 @@
-name: Build PIB + News On AIR RSS feeds
+name: Build PIB + News On AIR + Current Affairs RSS feeds
 
 on:
   schedule:
@@ -10,10 +10,13 @@ on:
     paths:
       - pib_feed.py
       - newsonair_feed.py
+      - visioniaspt365.py
+      - meca.py
+      - archive_pdfs.py
       - .github/workflows/build-feeds.yml
 
 permissions:
-  contents: read
+  contents: write   # archive_pdfs.py uploads PDFs as release assets
   pages: write
   id-token: write
 
@@ -53,6 +56,27 @@ jobs:
           # <base>/<key>/feed.xml and merge, so feeds grow past the source window.
           NOA_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
         run: python newsonair_feed.py
+
+      - name: Build Vision IAS PT/Mains 365 feeds
+        env:
+          VIS_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+          # Point feed items at the archived PDFs on the release, and write the
+          # archive manifests consumed by archive_pdfs.py.
+          VIS_ARCHIVE_MODE: archive
+          VIS_ARCHIVE_BASE_URL: "https://github.com/${{ github.repository }}/releases/download/pdf-archive"
+        run: python visioniaspt365.py
+
+      - name: Build Made Easy + NextIAS current-affairs feeds
+        env:
+          MECA_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+          MECA_ARCHIVE_MODE: archive
+          MECA_ARCHIVE_BASE_URL: "https://github.com/${{ github.repository }}/releases/download/pdf-archive"
+        run: python meca.py
+
+      - name: Mirror PDFs to the archive release
+        env:
+          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        run: python archive_pdfs.py
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
