@@ -82,3 +82,86 @@ PIB_YEARS=2024 PIB_SCAN_COUNT=40 python pib_feed.py   # quick test
   redesign the pages, the selectors may need updating.
 - Be polite — keep the schedule modest.
 - Unofficial and unaffiliated with PIB; content © Government of India / PIB.
+
+---
+
+# News On AIR feeds — English (unofficial)
+
+Self-hosted, consolidated, **full-text English RSS feeds** of
+[News On AIR](https://newsonair.gov.in) (All India Radio / Prasar Bharati)
+content, built by `newsonair_feed.py`:
+
+| Feed | What | GitHub Pages | GitLab Pages |
+|------|------|------|------|
+| Top News | all latest English stories | [feed.xml](https://nappingcats.github.io/pib_feed/news/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news/feed.xml) |
+| National | national news | [feed.xml](https://nappingcats.github.io/pib_feed/news_national/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news_national/feed.xml) |
+| International | international news | [feed.xml](https://nappingcats.github.io/pib_feed/news_international/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news_international/feed.xml) |
+| Business | business news | [feed.xml](https://nappingcats.github.io/pib_feed/news_business/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news_business/feed.xml) |
+| Sports | sports news | [feed.xml](https://nappingcats.github.io/pib_feed/news_sports/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news_sports/feed.xml) |
+| Regional | regional news | [feed.xml](https://nappingcats.github.io/pib_feed/news_regional/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news_regional/feed.xml) |
+| Elections | election news | [feed.xml](https://nappingcats.github.io/pib_feed/news_elections/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news_elections/feed.xml) |
+| Miscellaneous | everything else | [feed.xml](https://nappingcats.github.io/pib_feed/news_miscellaneous/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news_miscellaneous/feed.xml) |
+| Morning News | English Morning News bulletin (full transcript) | [feed.xml](https://nappingcats.github.io/pib_feed/bulletin_morning/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/bulletin_morning/feed.xml) |
+| Midday News | English Midday News bulletin (full transcript) | [feed.xml](https://nappingcats.github.io/pib_feed/bulletin_midday/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/bulletin_midday/feed.xml) |
+| Evening News | English Evening News bulletin (full transcript) | [feed.xml](https://nappingcats.github.io/pib_feed/bulletin_evening/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/bulletin_evening/feed.xml) |
+
+## Why this exists
+
+News On AIR runs on WordPress and *does* expose RSS, but with real gaps:
+
+- its `/rss-feeds/` "national feed" lists 100 items but is **headline-only**;
+- its native `/category/<x>/feed/` feeds carry full bodies but are **hard-capped
+  at 10 items** (`?posts_per_rss=` and `?paged=` are ignored) — no history on an
+  hourly newswire;
+- its news **bulletins** (Morning / Midday / Evening — AIR's signature content)
+  are a JS-rendered custom post type with **no working feed at all**.
+
+## How it works
+
+`newsonair_feed.py` builds all feeds from two clean sources — no HTML scraping
+for the news, minimal for bulletins:
+
+- **News** — the site's own JSON endpoint `/wp-json/api/newsonair` returns the
+  100 latest items, already English-only, each with full `body`, category,
+  permalink, image and IST timestamp. One call feeds the *Top News* feed plus
+  one feed per `news_category`.
+- **Bulletins** — the `admin-ajax.php` action `filter_bulletins_details`
+  (`category=<slug>`) enumerates recent bulletins; each bulletin detail page is
+  server-rendered, so the full transcript is read from its `entry-content`
+  block.
+
+Like the PIB feeds, each feed merges its previously-published copy so history
+grows past the source's rolling window, is sorted newest-first, and is capped
+(Top News 500, category feeds 300, bulletins 250). Output goes to
+`public/<key>/feed.xml` + an `index.html` per feed.
+
+## Configuration (env vars)
+
+| Var | Default | Meaning |
+|-----|---------|---------|
+| `NOA_WORKERS` | `8` | Concurrent fetchers (bulletin details) |
+| `NOA_BULLETIN_PAGES` | `3` | Bulletin listing pages to walk per feed |
+| `NOA_PUBLISHED_BASE_URL` | – | Base URL of the live site; per-feed history is read from `<base>/<key>/feed.xml` |
+| `NOA_OUT_DIR` | `public` | Output directory |
+
+Per-feed item caps and the feed list are set in the `FEEDS` table in
+`newsonair_feed.py`.
+
+## Local run
+
+```bash
+pip install -r requirements.txt
+NOA_BULLETIN_PAGES=1 python newsonair_feed.py   # quick test
+# -> public/<key>/feed.xml for each feed
+```
+
+The same GitHub Actions workflow builds and deploys both the PIB and News On
+AIR feeds in one run (a single GitHub Pages deployment serves all of them).
+
+## Caveats
+
+- Depends on News On AIR's current `/api/newsonair` shape and the bulletin
+  `admin-ajax` action; if they change, the extractor may need updating.
+- The `/api/newsonair` window is the latest 100 items only — depth comes from
+  history-merge over successive hourly runs.
+- Unofficial and unaffiliated; content © Prasar Bharati / All India Radio.

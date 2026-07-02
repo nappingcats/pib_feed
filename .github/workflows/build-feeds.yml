@@ -1,14 +1,15 @@
-name: Build PIB RSS feeds
+name: Build PIB + News On AIR RSS feeds
 
 on:
   schedule:
-    # Press releases move fast; the rest are infrequent. Hourly covers both.
+    # Press releases and AIR news move fast; the rest are infrequent. Hourly covers both.
     - cron: "17 * * * *"
   workflow_dispatch: {}
   push:
     branches: [main]
     paths:
       - pib_feed.py
+      - newsonair_feed.py
       - .github/workflows/build-feeds.yml
 
 permissions:
@@ -44,6 +45,14 @@ jobs:
           # the scan window. Each feed reads <base>/<key>/feed.xml.
           PIB_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
         run: python pib_feed.py
+
+      - name: Build News On AIR feeds
+        env:
+          NOA_WORKERS: "10"
+          # Same history-retention trick: read each already-published feed from
+          # <base>/<key>/feed.xml and merge, so feeds grow past the source window.
+          NOA_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+        run: python newsonair_feed.py
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5

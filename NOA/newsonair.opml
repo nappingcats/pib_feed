@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>News On AIR feeds (unofficial)</title>
+  </head>
+  <body>
+    <outline text="News On AIR" title="News On AIR">
+      <outline type="rss" text="News On AIR — Top News" title="News On AIR — Top News" xmlUrl="https://nappingcats.github.io/pib_feed/news/feed.xml" htmlUrl="https://newsonair.gov.in/"/>
+      <outline type="rss" text="News On AIR — National" title="News On AIR — National" xmlUrl="https://nappingcats.github.io/pib_feed/news_national/feed.xml" htmlUrl="https://newsonair.gov.in/category/national/"/>
+      <outline type="rss" text="News On AIR — International" title="News On AIR — International" xmlUrl="https://nappingcats.github.io/pib_feed/news_international/feed.xml" htmlUrl="https://newsonair.gov.in/category/international/"/>
+      <outline type="rss" text="News On AIR — Business" title="News On AIR — Business" xmlUrl="https://nappingcats.github.io/pib_feed/news_business/feed.xml" htmlUrl="https://newsonair.gov.in/category/business/"/>
+      <outline type="rss" text="News On AIR — Sports" title="News On AIR — Sports" xmlUrl="https://nappingcats.github.io/pib_feed/news_sports/feed.xml" htmlUrl="https://newsonair.gov.in/category/sports/"/>
+      <outline type="rss" text="News On AIR — Regional" title="News On AIR — Regional" xmlUrl="https://nappingcats.github.io/pib_feed/news_regional/feed.xml" htmlUrl="https://newsonair.gov.in/category/regional-news/"/>
+      <outline type="rss" text="News On AIR — Elections" title="News On AIR — Elections" xmlUrl="https://nappingcats.github.io/pib_feed/news_elections/feed.xml" htmlUrl="https://newsonair.gov.in/category/elections/"/>
+      <outline type="rss" text="News On AIR — Miscellaneous" title="News On AIR — Miscellaneous" xmlUrl="https://nappingcats.github.io/pib_feed/news_miscellaneous/feed.xml" htmlUrl="https://newsonair.gov.in/category/miscellaneous/"/>
+      <outline type="rss" text="News On AIR — Morning News Bulletin" title="News On AIR — Morning News Bulletin" xmlUrl="https://nappingcats.github.io/pib_feed/bulletin_morning/feed.xml" htmlUrl="https://newsonair.gov.in/bulletins-detail-category/morning-news/"/>
+      <outline type="rss" text="News On AIR — Midday News Bulletin" title="News On AIR — Midday News Bulletin" xmlUrl="https://nappingcats.github.io/pib_feed/bulletin_midday/feed.xml" htmlUrl="https://newsonair.gov.in/bulletins-detail-category/midday-news/"/>
+      <outline type="rss" text="News On AIR — Evening News Bulletin" title="News On AIR — Evening News Bulletin" xmlUrl="https://nappingcats.github.io/pib_feed/bulletin_evening/feed.xml" htmlUrl="https://newsonair.gov.in/bulletins-detail-category/evening-news/"/>
+    </outline>
+  </body>
+</opml>
