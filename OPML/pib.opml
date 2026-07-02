@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>PIB feeds (unofficial)</title>
+  </head>
+  <body>
+      <outline text="PIB (Press Information Bureau)" title="PIB (Press Information Bureau)">
+        <outline type="rss" text="PIB — Press Releases" title="PIB — Press Releases" xmlUrl="https://nappingcats.github.io/pib_feed/press_releases/feed.xml" htmlUrl="https://www.pib.gov.in"/>
+        <outline type="rss" text="PIB — PMO" title="PIB — PMO" xmlUrl="https://nappingcats.github.io/pib_feed/pmo/feed.xml" htmlUrl="https://www.pib.gov.in"/>
+        <outline type="rss" text="PIB — Backgrounders" title="PIB — Backgrounders" xmlUrl="https://nappingcats.github.io/pib_feed/backgrounders/feed.xml" htmlUrl="https://www.pib.gov.in"/>
+        <outline type="rss" text="PIB — Factsheets" title="PIB — Factsheets" xmlUrl="https://nappingcats.github.io/pib_feed/factsheets/feed.xml" htmlUrl="https://www.pib.gov.in"/>
+        <outline type="rss" text="PIB — Features" title="PIB — Features" xmlUrl="https://nappingcats.github.io/pib_feed/features/feed.xml" htmlUrl="https://www.pib.gov.in"/>
+        <outline type="rss" text="PIB — FAQs" title="PIB — FAQs" xmlUrl="https://nappingcats.github.io/pib_feed/faqs/feed.xml" htmlUrl="https://www.pib.gov.in"/>
+      </outline>
+  </body>
+</opml>
