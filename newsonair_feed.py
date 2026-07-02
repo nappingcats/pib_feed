@@ -157,6 +157,14 @@ FEEDS = [
         "slug": "evening-news",
         "max_items": 250,
     },
+    {
+        "key": "parikrama",
+        "title": "News On AIR — Parikrama",
+        "desc": "Unofficial full-text feed of AIR's Parikrama news magazine.",
+        "mode": "bulletin",
+        "slug": "parikrama",
+        "max_items": 250,
+    },
 ]
 
 

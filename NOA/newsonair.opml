@@ -16,6 +16,7 @@
       <outline type="rss" text="News On AIR — Morning News Bulletin" title="News On AIR — Morning News Bulletin" xmlUrl="https://nappingcats.github.io/pib_feed/bulletin_morning/feed.xml" htmlUrl="https://newsonair.gov.in/bulletins-detail-category/morning-news/"/>
       <outline type="rss" text="News On AIR — Midday News Bulletin" title="News On AIR — Midday News Bulletin" xmlUrl="https://nappingcats.github.io/pib_feed/bulletin_midday/feed.xml" htmlUrl="https://newsonair.gov.in/bulletins-detail-category/midday-news/"/>
       <outline type="rss" text="News On AIR — Evening News Bulletin" title="News On AIR — Evening News Bulletin" xmlUrl="https://nappingcats.github.io/pib_feed/bulletin_evening/feed.xml" htmlUrl="https://newsonair.gov.in/bulletins-detail-category/evening-news/"/>
+      <outline type="rss" text="News On AIR — Parikrama" title="News On AIR — Parikrama" xmlUrl="https://nappingcats.github.io/pib_feed/parikrama/feed.xml" htmlUrl="https://newsonair.gov.in/bulletins-detail-category/parikrama/"/>
     </outline>
   </body>
 </opml>

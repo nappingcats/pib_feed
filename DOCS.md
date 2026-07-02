@@ -104,6 +104,7 @@ content, built by `newsonair_feed.py`:
 | Morning News | English Morning News bulletin (full transcript) | [feed.xml](https://nappingcats.github.io/pib_feed/bulletin_morning/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/bulletin_morning/feed.xml) |
 | Midday News | English Midday News bulletin (full transcript) | [feed.xml](https://nappingcats.github.io/pib_feed/bulletin_midday/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/bulletin_midday/feed.xml) |
 | Evening News | English Evening News bulletin (full transcript) | [feed.xml](https://nappingcats.github.io/pib_feed/bulletin_evening/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/bulletin_evening/feed.xml) |
+| Parikrama | AIR Parikrama news magazine (full transcript) | [feed.xml](https://nappingcats.github.io/pib_feed/parikrama/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/parikrama/feed.xml) |
 
 ## Why this exists
 
