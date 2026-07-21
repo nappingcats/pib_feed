@@ -4,16 +4,10 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - name: Grab sample pages
+      - name: Check listing order at both ends
         run: |
           UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
-          mkdir -p ipcs
-          for p in commentaries issue_briefs special_reports research_paper ipcs_books_reviews discussion_reports; do
-            curl -A "$UA" -s --max-time 40 "https://www.ipcs.org/${p}.php" -o "ipcs/${p}.html" -w "${p}: %{http_code} %{size_download}\n"
+          for u in 'issue_briefs.php' 'issue_briefs.php?pageno=27' 'special_reports.php?pageno=23' 'ipcs_books_reviews.php?pageno=15' 'discussion_reports.php?pageno=5' 'research_paper.php?pageno=3' 'commentaries.php?pageno=585'; do
+            echo "--- $u"
+            curl -A "$UA" -s --max-time 40 "https://www.ipcs.org/$u" | grep -oE '[0-9]{1,2} [A-Z][a-z]{2}, [0-9]{4}' | head -3
           done
-          curl -A "$UA" -s --max-time 40 'https://www.ipcs.org/comm_select.php?articleNo=5912' -o ipcs/article.html -w "article: %{http_code} %{size_download}\n"
-          curl -A "$UA" -s --max-time 40 'https://www.ipcs.org/comm_select.php?articleNo=5489' -o ipcs/brief.html -w "brief: %{http_code} %{size_download}\n"
-      - uses: actions/upload-artifact@v6
-        with:
-          name: ipcs-pages
-          path: ipcs/
