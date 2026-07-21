@@ -4,34 +4,16 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - name: Probe ipcs.org structure
+      - name: Grab sample pages
         run: |
           UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
-          fetch() { curl -A "$UA" -s --max-time 40 "$1" ; }
-          echo "===== nav links on index ====="
-          fetch 'https://www.ipcs.org/index.php' | grep -oE 'href="[a-z_]+\.php[^"]*"' | sort | uniq -c | sort -rn | head -30
-          echo "===== article page shape ====="
-          fetch 'https://www.ipcs.org/comm_select.php?articleNo=5907' > art.html
-          wc -c art.html
-          grep -oiE '<title>[^<]*' art.html
-          grep -oE 'comm_archive\.php[^"]*' art.html | sort -u | head -5
-          python3 - <<'EOF'
-          import re
-          page = open("art.html").read()
-          paras = [re.sub(r"<[^>]+>", "", p).strip() for p in re.findall(r"<p[^>]*>(.*?)</p>", page, re.S)]
-          long = [p for p in paras if len(p) > 120]
-          print("long paragraphs:", len(long))
-          print("first:", long[0][:150] if long else None)
-          m = re.search(r"\d{1,2}\s+[A-Z][a-z]+\s+\d{4}", page)
-          print("date:", m.group(0) if m else None)
-          EOF
-          echo "===== archive listing ====="
-          fetch 'https://www.ipcs.org/comm_archive.php' > arch.html
-          wc -c arch.html
-          grep -oE 'href="[^"]*articleNo=[0-9]+"' arch.html | head -5
-          grep -oE 'comm_archive\.php\?[^"]*' arch.html | sort -u | head -10
-          echo "===== other sections ====="
-          for p in issue_briefs special_reports research_papers ipcs_books; do
-            echo "--- $p"
-            fetch "https://www.ipcs.org/${p}.php" | grep -oE 'href="[^"]*"' | grep -iE 'articleNo|\.pdf|book' | sort -u | head -6
+          mkdir -p ipcs
+          for p in commentaries issue_briefs special_reports research_paper ipcs_books_reviews discussion_reports; do
+            curl -A "$UA" -s --max-time 40 "https://www.ipcs.org/${p}.php" -o "ipcs/${p}.html" -w "${p}: %{http_code} %{size_download}\n"
           done
+          curl -A "$UA" -s --max-time 40 'https://www.ipcs.org/comm_select.php?articleNo=5912' -o ipcs/article.html -w "article: %{http_code} %{size_download}\n"
+          curl -A "$UA" -s --max-time 40 'https://www.ipcs.org/comm_select.php?articleNo=5489' -o ipcs/brief.html -w "brief: %{http_code} %{size_download}\n"
+      - uses: actions/upload-artifact@v6
+        with:
+          name: ipcs-pages
+          path: ipcs/
