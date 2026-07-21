@@ -41,9 +41,12 @@ import html
 import os
 import re
 import sys
+import tempfile
 from email.utils import format_datetime, parsedate_to_datetime
+from pathlib import Path
 from xml.sax.saxutils import escape
 
+import certifi
 import requests
 
 BASE = "https://eacpm.gov.in"
@@ -82,9 +85,18 @@ FEEDS = {
 
 
 # --- http ---------------------------------------------------------------------
+# eacpm.gov.in chains to ISRG Root YR (Let's Encrypt, 2025), which certifi's
+# bundle predates; verify against certifi plus the vendored root.
+ROOT_YR_PEM = Path(__file__).with_name("certs") / "isrg-root-yr.pem"
+
+
 def make_session() -> requests.Session:
     s = requests.Session()
     s.headers.update({"User-Agent": UA, "Accept-Language": "en"})
+    bundle = tempfile.NamedTemporaryFile(delete=False, suffix=".pem")
+    bundle.write(Path(certifi.where()).read_bytes() + ROOT_YR_PEM.read_bytes())
+    bundle.close()
+    s.verify = bundle.name
     return s
 
 
