@@ -1,0 +1,12 @@
+name: IPCS probe (temporary)
+on: workflow_dispatch
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe ipcs.org
+        run: |
+          UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+          curl -A "$UA" -s --max-time 40 -o page.html -w "index.php: %{http_code} %{size_download}\n" 'https://www.ipcs.org/index.php' || echo "index.php failed: $?"
+          grep -oiE '<title>[^<]*' page.html | head -2 || true
+          grep -oE 'href="[^"]*(comm_select|article|issue-brief|special-report|research-paper|book)[^"]*"' page.html | sort -u | head -30 || true
