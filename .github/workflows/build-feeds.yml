@@ -130,7 +130,7 @@ jobs:
           IE_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
         run: python indianexpress.py
 
-      - name: Build Indian Express epaper feeds (UPSC Essentials, Delhi, EYE)
+      - name: Build Indian Express epaper feeds (UPSC Essentials, Delhi)
         env:
           IE_EPAPER_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
           # Epaper PDFs live behind signed, expiring URLs, so mirror them to the
