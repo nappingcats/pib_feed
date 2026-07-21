@@ -4,9 +4,34 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - name: Probe ipcs.org
+      - name: Probe ipcs.org structure
         run: |
           UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
-          curl -A "$UA" -s --max-time 40 -o page.html -w "index.php: %{http_code} %{size_download}\n" 'https://www.ipcs.org/index.php' || echo "index.php failed: $?"
-          grep -oiE '<title>[^<]*' page.html | head -2 || true
-          grep -oE 'href="[^"]*(comm_select|article|issue-brief|special-report|research-paper|book)[^"]*"' page.html | sort -u | head -30 || true
+          fetch() { curl -A "$UA" -s --max-time 40 "$1" ; }
+          echo "===== nav links on index ====="
+          fetch 'https://www.ipcs.org/index.php' | grep -oE 'href="[a-z_]+\.php[^"]*"' | sort | uniq -c | sort -rn | head -30
+          echo "===== article page shape ====="
+          fetch 'https://www.ipcs.org/comm_select.php?articleNo=5907' > art.html
+          wc -c art.html
+          grep -oiE '<title>[^<]*' art.html
+          grep -oE 'comm_archive\.php[^"]*' art.html | sort -u | head -5
+          python3 - <<'EOF'
+          import re
+          page = open("art.html").read()
+          paras = [re.sub(r"<[^>]+>", "", p).strip() for p in re.findall(r"<p[^>]*>(.*?)</p>", page, re.S)]
+          long = [p for p in paras if len(p) > 120]
+          print("long paragraphs:", len(long))
+          print("first:", long[0][:150] if long else None)
+          m = re.search(r"\d{1,2}\s+[A-Z][a-z]+\s+\d{4}", page)
+          print("date:", m.group(0) if m else None)
+          EOF
+          echo "===== archive listing ====="
+          fetch 'https://www.ipcs.org/comm_archive.php' > arch.html
+          wc -c arch.html
+          grep -oE 'href="[^"]*articleNo=[0-9]+"' arch.html | head -5
+          grep -oE 'comm_archive\.php\?[^"]*' arch.html | sort -u | head -10
+          echo "===== other sections ====="
+          for p in issue_briefs special_reports research_papers ipcs_books; do
+            echo "--- $p"
+            fetch "https://www.ipcs.org/${p}.php" | grep -oE 'href="[^"]*"' | grep -iE 'articleNo|\.pdf|book' | sort -u | head -6
+          done
