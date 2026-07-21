@@ -9,7 +9,6 @@
         <outline type="rss" text="Opinion - Indian Express" title="Opinion - Indian Express" xmlUrl="https://nappingcats.github.io/pib_feed/indianexpress-opinion/feed.xml" htmlUrl="https://indianexpress.com/section/opinion/"/>
         <outline type="rss" text="UPSC Essentials - Indian Express" title="UPSC Essentials - Indian Express" xmlUrl="https://nappingcats.github.io/pib_feed/upsc-essentials/feed.xml" htmlUrl="https://epaper.indianexpress.com/t/23812/latest"/>
         <outline type="rss" text="Delhi Edition - Indian Express" title="Delhi Edition - Indian Express" xmlUrl="https://nappingcats.github.io/pib_feed/indianexpress-delhi/feed.xml" htmlUrl="https://epaper.indianexpress.com/t/226/latest"/>
-        <outline type="rss" text="EYE - Indian Express" title="EYE - Indian Express" xmlUrl="https://nappingcats.github.io/pib_feed/indianexpress-eye/feed.xml" htmlUrl="https://epaper.indianexpress.com/t/269/latest"/>
       </outline>
   </body>
 </opml>

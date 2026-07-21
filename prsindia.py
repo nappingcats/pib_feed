@@ -12,10 +12,6 @@ Feeds built here:
   prs-bills              /billtrack                     bills + current status
   prs-acts               /acts/parliament               enacted laws (PDF each)
   prs-budgets            /budgets/parliament            union budget analyses
-  prs-vital-stats        /parliamenttrack/vital-stats   per-session functioning
-  prs-policy-reviews     /policy/monthly-policy-review   monthly policy reviews
-  prs-discussion-papers  /policy/discussion-papers       research discussion papers
-  prs-report-summaries   /policy/report-summaries        committee report summaries
 
 Dates: PRS listings carry no per-item timestamp and the pages' `og:updated_time`
 is just a render clock (identical on every page). So each item's date is taken
@@ -29,13 +25,11 @@ previously-published copy so history survives a transient scrape failure.
 """
 from __future__ import annotations
 
-import calendar
 import datetime as dt
 import html
 import os
 import re
 import sys
-from concurrent.futures import ThreadPoolExecutor
 from email.utils import format_datetime, parsedate_to_datetime
 from xml.sax.saxutils import escape
 
@@ -51,14 +45,8 @@ IST = dt.timezone(dt.timedelta(hours=5, minutes=30))
 # --- global tunables ----------------------------------------------------------
 TIMEOUT = int(os.environ.get("PRS_TIMEOUT", "45"))
 RETRIES = int(os.environ.get("PRS_RETRIES", "2"))
-WORKERS = int(os.environ.get("PRS_WORKERS", "8"))
 OUT_DIR = os.environ.get("PRS_OUT_DIR", "public")
 PUBLISHED_BASE_URL = os.environ.get("PRS_PUBLISHED_BASE_URL", "").strip().rstrip("/")
-# Monthly Policy Review has no archive listing (its page links only the current
-# month), but every past edition lives at a predictable month URL. We enumerate
-# months from here to now and keep the ones whose page is real. Archive starts
-# ~Dec 2012.
-MPR_MIN_YEAR = int(os.environ.get("PRS_MPR_MIN_YEAR", "2012"))
 
 # --- the feeds ----------------------------------------------------------------
 # `prefix` is the href prefix that identifies an item link within the listing;
@@ -99,51 +87,6 @@ FEEDS = [
         "bills": False,
         "pdf": False,
         "max_items": 300,
-    },
-    {
-        "key": "prs-vital-stats",
-        "title": "Vital Stats - PRS",
-        "desc": "Unofficial feed of PRS Vital Stats on parliamentary functioning.",
-        "list_url": f"{BASE}/parliamenttrack/vital-stats",
-        "prefix": "/parliamenttrack/vital-stats/",
-        "exclude": (),
-        "bills": False,
-        "pdf": False,
-        "max_items": 300,
-    },
-    {
-        "key": "prs-policy-reviews",
-        "title": "Monthly Policy Review - PRS",
-        "desc": "Unofficial feed of PRS Monthly Policy Reviews.",
-        "list_url": f"{BASE}/policy/monthly-policy-review",
-        "prefix": "/policy/monthly-policy-review/",
-        "exclude": (),
-        "bills": False,
-        "pdf": False,
-        "mode": "months",  # enumerate + verify month pages (no archive listing)
-        "max_items": 300,
-    },
-    {
-        "key": "prs-discussion-papers",
-        "title": "Discussion Papers - PRS",
-        "desc": "Unofficial feed of PRS discussion papers.",
-        "list_url": f"{BASE}/policy/discussion-papers",
-        "prefix": "/policy/discussion-papers/",
-        "exclude": (),
-        "bills": False,
-        "pdf": False,
-        "max_items": 200,
-    },
-    {
-        "key": "prs-report-summaries",
-        "title": "Report Summaries - PRS",
-        "desc": "Unofficial feed of PRS summaries of parliamentary committee reports.",
-        "list_url": f"{BASE}/policy/report-summaries",
-        "prefix": "/policy/report-summaries/",
-        "exclude": (),
-        "bills": False,
-        "pdf": False,
-        "max_items": 500,
     },
 ]
 
@@ -242,55 +185,6 @@ def collect(feed: dict, page: str) -> list[dict]:
         )
     print(f"  {feed['key']}: scraped {len(out)} items")
     return out
-
-
-TITLE_RE = re.compile(r"<title>(.*?)</title>", re.S | re.I)
-
-
-def _mpr_probe(session: requests.Session, feed: dict, year: int, month: int) -> dict | None:
-    """Fetch one Monthly Policy Review month page; return an item if it's real
-    (its <title> is the month name, not the site 404 template)."""
-    name = calendar.month_name[month]
-    slug = f"{name.lower()}-{year}"
-    link = f"{BASE}{feed['prefix']}{slug}"
-    page = fetch(session, link)
-    if not page:
-        return None
-    m = TITLE_RE.search(page)
-    title = clean(m.group(1)) if m else ""
-    if "does not exist" in title.lower() or "#404" in title or name.lower() not in title.lower():
-        return None
-    return {
-        "href": f"{feed['prefix']}{slug}",
-        "link": link,
-        "title": f"Monthly Policy Review — {name} {year}",
-        "year": year,
-        "status": "",
-        "pdf": "",
-        "when": dt.datetime(year, month, 1, tzinfo=IST),
-    }
-
-
-def collect_months(
-    session: requests.Session, feed: dict, known: set[str], now: dt.datetime
-) -> list[dict]:
-    """Enumerate every month from MPR_MIN_YEAR to now, skipping months already in
-    the feed, and keep those whose page verifies as real."""
-    candidates: list[tuple[int, int]] = []
-    for year in range(MPR_MIN_YEAR, now.year + 1):
-        last = now.month if year == now.year else 12
-        for month in range(1, last + 1):
-            slug = f"{calendar.month_name[month].lower()}-{year}"
-            if f"{BASE}{feed['prefix']}{slug}" in known:
-                continue
-            candidates.append((year, month))
-    found: list[dict] = []
-    with ThreadPoolExecutor(max_workers=WORKERS) as ex:
-        for it in ex.map(lambda ym: _mpr_probe(session, feed, ym[0], ym[1]), candidates):
-            if it:
-                found.append(it)
-    print(f"  {feed['key']}: probed {len(candidates)} months, found {len(found)} new")
-    return found
 
 
 def build_body(feed: dict, it: dict) -> str:
@@ -424,20 +318,16 @@ def write_feed(feed: dict, xml: str, count: int) -> None:
 def run_feed(session: requests.Session, feed: dict, now: dt.datetime) -> int:
     print(f"[{feed['key']}]")
     merged = load_published(session, feed["key"])
-    if feed.get("mode") == "months":
-        for it in collect_months(session, feed, set(merged), now):
+    page = fetch(session, feed["list_url"])
+    if page:
+        items = collect(feed, page)
+        assign_dates(items, now)
+        for it in items:
+            if it["link"] in merged:
+                continue  # keep the stable first-seen date/block
             merged[it["link"]] = (it["when"], render_item(feed, it, it["when"]).strip())
     else:
-        page = fetch(session, feed["list_url"])
-        if page:
-            items = collect(feed, page)
-            assign_dates(items, now)
-            for it in items:
-                if it["link"] in merged:
-                    continue  # keep the stable first-seen date/block
-                merged[it["link"]] = (it["when"], render_item(feed, it, it["when"]).strip())
-        else:
-            print(f"  {feed['key']}: listing fetch failed; keeping published only", file=sys.stderr)
+        print(f"  {feed['key']}: listing fetch failed; keeping published only", file=sys.stderr)
     xml, kept = build_feed(feed, merged)
     write_feed(feed, xml, kept)
     print(f"  {feed['key']}: feed now {kept}")

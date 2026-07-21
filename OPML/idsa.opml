@@ -7,12 +7,8 @@
       <outline text="MP-IDSA (Institute for Defence Studies and Analyses)" title="MP-IDSA (Institute for Defence Studies and Analyses)">
         <outline type="rss" text="Comments - MP-IDSA" title="Comments - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-comments/feed.xml" htmlUrl="https://idsa.in/publication-type/comments"/>
         <outline type="rss" text="Issue Briefs - MP-IDSA" title="Issue Briefs - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-issue-briefs/feed.xml" htmlUrl="https://idsa.in/publication-type/issuebrief"/>
-        <outline type="rss" text="Occasional Papers - MP-IDSA" title="Occasional Papers - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-occasional-papers/feed.xml" htmlUrl="https://idsa.in/publication-type/occasionalpaper"/>
         <outline type="rss" text="Monographs - MP-IDSA" title="Monographs - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-monographs/feed.xml" htmlUrl="https://idsa.in/publication-type/monograph"/>
-        <outline type="rss" text="Books - MP-IDSA" title="Books - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-books/feed.xml" htmlUrl="https://idsa.in/publication-type/book"/>
-        <outline type="rss" text="Policy Briefs - MP-IDSA" title="Policy Briefs - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-policy-briefs/feed.xml" htmlUrl="https://idsa.in/publication-type/policybrief"/>
         <outline type="rss" text="Backgrounders - MP-IDSA" title="Backgrounders - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-backgrounders/feed.xml" htmlUrl="https://idsa.in/publication-type/backgrounder"/>
-        <outline type="rss" text="West Asia War Analyses - MP-IDSA" title="West Asia War Analyses - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-west-asia-war-analyses/feed.xml" htmlUrl="https://idsa.in/publication-type/west-asia-war-analyses"/>
       </outline>
   </body>
 </opml>

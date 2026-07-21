@@ -152,11 +152,6 @@ jobs:
           NITI_ARCHIVE_BASE_URL: "https://github.com/${{ github.repository }}/releases/download/pdf-archive"
         run: python niti.py
 
-      - name: Build CPR India feeds
-        env:
-          CPR_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
-        run: python cprindia.py
-
       - name: Build IPCS feeds
         env:
           IPCS_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"

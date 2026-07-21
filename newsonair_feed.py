@@ -2,23 +2,12 @@
 """Build consolidated English RSS feeds from News On AIR (newsonair.gov.in).
 
 News On AIR — the news service of All India Radio / Prasar Bharati — runs on
-WordPress and *does* expose RSS, but with real gaps (mirroring why the sibling
-`pib_feed.py` exists):
+WordPress but its news BULLETINS (Morning / Midday / Evening / Parikrama —
+AIR's signature content) are a JS-rendered custom post type with NO working
+feed at all.
 
-  * its `/rss-feeds/` "national feed" lists 100 items but is HEADLINE-ONLY;
-  * its native `/category/<x>/feed/` feeds carry full bodies but are hard-capped
-    at 10 items (the WordPress `posts_per_rss` default; `?posts_per_rss=` and
-    `?paged=` are ignored) — useless as history on an hourly newswire;
-  * its news BULLETINS (Morning / Midday / Evening — AIR's signature content)
-    are a JS-rendered custom post type with NO working feed at all.
-
-This script reconstructs clean, full-text, history-retaining RSS 2.0 feeds from
-two clean data sources — no HTML scraping for the news, minimal for bulletins:
-
-  NEWS    the site's own JSON endpoint `/wp-json/api/newsonair` returns the 100
-          latest items already English-only, each with full `body`, category,
-          permalink, image and IST timestamp. One call feeds an "all news" feed
-          plus one feed per news category.
+This script reconstructs clean, full-text, history-retaining RSS 2.0 feeds for
+those bulletins with minimal scraping:
 
   BULLETINS  the `admin-ajax.php` action `filter_bulletins_details`
           (category=<slug>) enumerates recent bulletins; each bulletin detail
@@ -44,7 +33,6 @@ from xml.sax.saxutils import escape
 import requests
 
 BASE = "https://newsonair.gov.in"
-API = BASE + "/wp-json/api/newsonair"
 AJAX = BASE + "/wp-admin/admin-ajax.php"
 
 UA = (
@@ -70,70 +58,6 @@ PUBLISHED_BASE_URL = os.environ.get("NOA_PUBLISHED_BASE_URL", "").strip().rstrip
 #   "api"      — filter the /api/newsonair payload by news_category (None = all)
 #   "bulletin" — enumerate + scrape a bulletin category by its slug
 FEEDS = [
-    {
-        "key": "news",
-        "title": "Top News - News On AIR",
-        "desc": "Unofficial full-text English feed of the latest News On AIR stories.",
-        "mode": "api",
-        "category": None,
-        "max_items": 500,
-    },
-    {
-        "key": "news_national",
-        "title": "National - News On AIR",
-        "desc": "Unofficial full-text English feed of News On AIR national news.",
-        "mode": "api",
-        "category": "National",
-        "max_items": 300,
-    },
-    {
-        "key": "news_international",
-        "title": "International - News On AIR",
-        "desc": "Unofficial full-text English feed of News On AIR international news.",
-        "mode": "api",
-        "category": "International",
-        "max_items": 300,
-    },
-    {
-        "key": "news_business",
-        "title": "Business - News On AIR",
-        "desc": "Unofficial full-text English feed of News On AIR business news.",
-        "mode": "api",
-        "category": "Business",
-        "max_items": 300,
-    },
-    {
-        "key": "news_sports",
-        "title": "Sports - News On AIR",
-        "desc": "Unofficial full-text English feed of News On AIR sports news.",
-        "mode": "api",
-        "category": "Sports",
-        "max_items": 300,
-    },
-    {
-        "key": "news_regional",
-        "title": "Regional - News On AIR",
-        "desc": "Unofficial full-text English feed of News On AIR regional news.",
-        "mode": "api",
-        "category": "Regional News",
-        "max_items": 300,
-    },
-    {
-        "key": "news_elections",
-        "title": "Elections - News On AIR",
-        "desc": "Unofficial full-text English feed of News On AIR election news.",
-        "mode": "api",
-        "category": "Elections",
-        "max_items": 300,
-    },
-    {
-        "key": "news_miscellaneous",
-        "title": "Miscellaneous - News On AIR",
-        "desc": "Unofficial full-text English feed of miscellaneous News On AIR news.",
-        "mode": "api",
-        "category": "Miscellaneous",
-        "max_items": 300,
-    },
     {
         "key": "bulletin_morning",
         "title": "Morning News Bulletin - News On AIR",
@@ -191,79 +115,6 @@ def fetch(session: requests.Session, url: str, **kw) -> str | None:
     if last:
         print(f"  fetch failed {url}: {last}", file=sys.stderr)
     return None
-
-
-# --- news (JSON API) ----------------------------------------------------------
-DEVANAGARI = re.compile(r"[ऀ-ॿ]")
-ARABIC = re.compile(r"[؀-ۿݐ-ݿ]")
-INDIC = re.compile(r"[஀-௿ఀ-౿ঀ-෿]")
-LATIN = re.compile(r"[A-Za-z]")
-
-
-def is_english(text: str) -> bool:
-    if not text:
-        return False
-    lat = len(LATIN.findall(text))
-    non = len(DEVANAGARI.findall(text)) + len(ARABIC.findall(text)) + len(INDIC.findall(text))
-    return lat >= 5 and lat > non
-
-
-def fetch_news(session: requests.Session) -> list[dict]:
-    """Fetch the JSON news payload once; shared across all api-mode feeds."""
-    body = fetch(session, API)
-    if not body:
-        return []
-    try:
-        import json
-
-        data = json.loads(body)
-    except ValueError:
-        return []
-    return data if isinstance(data, list) else []
-
-
-def _parse_api_date(s: str) -> dt.datetime | None:
-    # "02-07-2026 14:49:20" (IST)
-    try:
-        return dt.datetime.strptime(s.strip(), "%d-%m-%Y %H:%M:%S").replace(tzinfo=IST)
-    except (ValueError, AttributeError):
-        return None
-
-
-def api_to_article(raw: dict) -> dict | None:
-    title = html.unescape((raw.get("title") or "").strip())
-    link = (raw.get("news_url") or "").strip()
-    uid = raw.get("unique_id")
-    if not title or not link or not uid:
-        return None
-    # the endpoint is English-only, but guard against stray non-English items
-    if raw.get("language") and raw["language"] != "English" and not is_english(title):
-        return None
-    body_text = (raw.get("body") or "").replace("\r\n", "\n").strip()
-    paras = [escape(p.strip()) for p in re.split(r"\n+", body_text) if p.strip()]
-    body_html = "".join(f"<p>{p}</p>\n" for p in paras)
-    img = (raw.get("image") or "").strip()
-    if img:
-        body_html = f'<p><img src="{escape(img)}" alt=""></p>\n' + body_html
-    return {
-        "id": int(uid),
-        "link": link,
-        "title": title,
-        "date": _parse_api_date(raw.get("publishedAt", "")),
-        "body_html": body_html.strip(),
-    }
-
-
-def collect_api(feed: dict, news: list[dict]) -> list[dict]:
-    cat = feed.get("category")
-    out = []
-    for raw in news:
-        if cat is not None and raw.get("news_category") != cat:
-            continue
-        art = api_to_article(raw)
-        if art:
-            out.append(art)
-    return out
 
 
 # --- bulletins (ajax listing + server-rendered detail) ------------------------
@@ -495,12 +346,9 @@ def write_landing() -> None:
 
 
 # --- main ---------------------------------------------------------------------
-def run_feed(session: requests.Session, feed: dict, news: list[dict]) -> int:
+def run_feed(session: requests.Session, feed: dict) -> int:
     print(f"[{feed['key']}]")
-    if feed["mode"] == "api":
-        arts = collect_api(feed, news)
-    else:
-        arts = collect_bulletins(session, feed)
+    arts = collect_bulletins(session, feed)
     existing = load_published(session, feed["key"])
     for art in arts:
         existing[art["id"]] = render_item(art).strip()
@@ -513,11 +361,9 @@ def run_feed(session: requests.Session, feed: dict, news: list[dict]) -> int:
 
 def main() -> int:
     session = make_session()
-    news = fetch_news(session)
-    print(f"/api/newsonair: {len(news)} items")
     counts: dict[str, int] = {}
     for feed in FEEDS:
-        counts[feed["key"]] = run_feed(session, feed, news)
+        counts[feed["key"]] = run_feed(session, feed)
     write_landing()
     print("Done:", counts)
     return 0

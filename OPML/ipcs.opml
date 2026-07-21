@@ -6,11 +6,6 @@
   <body>
       <outline text="IPCS (Institute of Peace and Conflict Studies)" title="IPCS (Institute of Peace and Conflict Studies)">
         <outline type="rss" text="Commentaries - IPCS" title="Commentaries - IPCS" xmlUrl="https://nappingcats.github.io/pib_feed/ipcs-commentaries/feed.xml" htmlUrl="https://www.ipcs.org/commentaries.php"/>
-        <outline type="rss" text="Issue Briefs - IPCS" title="Issue Briefs - IPCS" xmlUrl="https://nappingcats.github.io/pib_feed/ipcs-issue-briefs/feed.xml" htmlUrl="https://www.ipcs.org/issue_briefs.php"/>
-        <outline type="rss" text="Special Reports - IPCS" title="Special Reports - IPCS" xmlUrl="https://nappingcats.github.io/pib_feed/ipcs-special-reports/feed.xml" htmlUrl="https://www.ipcs.org/special_reports.php"/>
-        <outline type="rss" text="Research Papers - IPCS" title="Research Papers - IPCS" xmlUrl="https://nappingcats.github.io/pib_feed/ipcs-research-papers/feed.xml" htmlUrl="https://www.ipcs.org/research_paper.php"/>
-        <outline type="rss" text="Book Reviews - IPCS" title="Book Reviews - IPCS" xmlUrl="https://nappingcats.github.io/pib_feed/ipcs-book-reviews/feed.xml" htmlUrl="https://www.ipcs.org/ipcs_books_reviews.php"/>
-        <outline type="rss" text="Discussion Reports - IPCS" title="Discussion Reports - IPCS" xmlUrl="https://nappingcats.github.io/pib_feed/ipcs-discussion-reports/feed.xml" htmlUrl="https://www.ipcs.org/discussion_reports.php"/>
       </outline>
   </body>
 </opml>

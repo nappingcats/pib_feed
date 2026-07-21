@@ -93,14 +93,6 @@ content, built by `newsonair_feed.py`:
 
 | Feed | What | GitHub Pages | GitLab Pages |
 |------|------|------|------|
-| Top News | all latest English stories | [feed.xml](https://nappingcats.github.io/pib_feed/news/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news/feed.xml) |
-| National | national news | [feed.xml](https://nappingcats.github.io/pib_feed/news_national/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news_national/feed.xml) |
-| International | international news | [feed.xml](https://nappingcats.github.io/pib_feed/news_international/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news_international/feed.xml) |
-| Business | business news | [feed.xml](https://nappingcats.github.io/pib_feed/news_business/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news_business/feed.xml) |
-| Sports | sports news | [feed.xml](https://nappingcats.github.io/pib_feed/news_sports/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news_sports/feed.xml) |
-| Regional | regional news | [feed.xml](https://nappingcats.github.io/pib_feed/news_regional/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news_regional/feed.xml) |
-| Elections | election news | [feed.xml](https://nappingcats.github.io/pib_feed/news_elections/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news_elections/feed.xml) |
-| Miscellaneous | everything else | [feed.xml](https://nappingcats.github.io/pib_feed/news_miscellaneous/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/news_miscellaneous/feed.xml) |
 | Morning News | English Morning News bulletin (full transcript) | [feed.xml](https://nappingcats.github.io/pib_feed/bulletin_morning/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/bulletin_morning/feed.xml) |
 | Midday News | English Midday News bulletin (full transcript) | [feed.xml](https://nappingcats.github.io/pib_feed/bulletin_midday/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/bulletin_midday/feed.xml) |
 | Evening News | English Evening News bulletin (full transcript) | [feed.xml](https://nappingcats.github.io/pib_feed/bulletin_evening/feed.xml) | [feed.xml](https://nappingcats.gitlab.io/pib_feed/bulletin_evening/feed.xml) |
@@ -108,24 +100,15 @@ content, built by `newsonair_feed.py`:
 
 ## Why this exists
 
-News On AIR runs on WordPress and *does* expose RSS, but with real gaps:
-
-- its `/rss-feeds/` "national feed" lists 100 items but is **headline-only**;
-- its native `/category/<x>/feed/` feeds carry full bodies but are **hard-capped
-  at 10 items** (`?posts_per_rss=` and `?paged=` are ignored) — no history on an
-  hourly newswire;
-- its news **bulletins** (Morning / Midday / Evening — AIR's signature content)
-  are a JS-rendered custom post type with **no working feed at all**.
+News On AIR's news **bulletins** (Morning / Midday / Evening / Parikrama —
+AIR's signature content) are a JS-rendered custom post type with **no working
+feed at all**, so there is no way to follow the full bulletin transcripts in a
+reader without reconstructing the feed.
 
 ## How it works
 
-`newsonair_feed.py` builds all feeds from two clean sources — no HTML scraping
-for the news, minimal for bulletins:
+`newsonair_feed.py` builds each bulletin feed with minimal scraping:
 
-- **News** — the site's own JSON endpoint `/wp-json/api/newsonair` returns the
-  100 latest items, already English-only, each with full `body`, category,
-  permalink, image and IST timestamp. One call feeds the *Top News* feed plus
-  one feed per `news_category`.
 - **Bulletins** — the `admin-ajax.php` action `filter_bulletins_details`
   (`category=<slug>`) enumerates recent bulletins; each bulletin detail page is
   server-rendered, so the full transcript is read from its `entry-content`
@@ -133,8 +116,8 @@ for the news, minimal for bulletins:
 
 Like the PIB feeds, each feed merges its previously-published copy so history
 grows past the source's rolling window, is sorted newest-first, and is capped
-(Top News 500, category feeds 300, bulletins 250). Output goes to
-`public/<key>/feed.xml` + an `index.html` per feed.
+(bulletins 250). Output goes to `public/<key>/feed.xml` + an `index.html` per
+feed.
 
 ## Configuration (env vars)
 
@@ -161,9 +144,9 @@ AIR feeds in one run (a single GitHub Pages deployment serves all of them).
 
 ## Caveats
 
-- Depends on News On AIR's current `/api/newsonair` shape and the bulletin
-  `admin-ajax` action; if they change, the extractor may need updating.
-- The `/api/newsonair` window is the latest 100 items only — depth comes from
+- Depends on News On AIR's current bulletin `admin-ajax` action; if it changes,
+  the extractor may need updating.
+- The bulletin listing exposes only recent editions — depth comes from
   history-merge over successive hourly runs.
 - Unofficial and unaffiliated; content © Prasar Bharati / All India Radio.
 
@@ -300,8 +283,6 @@ window).
 | Cases | matters tracked on the SCO case docket | [feed.xml](https://nappingcats.github.io/pib_feed/scobserver-cases/feed.xml) |
 | Journal | analysis / opinion articles | [feed.xml](https://nappingcats.github.io/pib_feed/scobserver-journal/feed.xml) |
 | Reports | per-day argument & hearing summaries (full text) | [feed.xml](https://nappingcats.github.io/pib_feed/scobserver-reports/feed.xml) |
-| Court Events | day-wise hearing coverage | [feed.xml](https://nappingcats.github.io/pib_feed/scobserver-court-events/feed.xml) |
-| Law Reports (SCOLR) | judgment / case-law digests (full text) | [feed.xml](https://nappingcats.github.io/pib_feed/scobserver-scolr/feed.xml) |
 
 ## Why this exists
 
@@ -314,7 +295,7 @@ post types the default feed never touches.
 Every content type is exposed cleanly through the **WordPress REST API**
 (`/wp-json/wp/v2/<type>`) — title, permalink, published + modified timestamps, a
 ready-made summary (Yoast description) and embedded taxonomy terms, with the
-long-form types (`reports`, `scolr`) also returning full rendered bodies. No HTML
+long-form type (`reports`) also returning full rendered bodies. No HTML
 scraping. `scobserver.py` pages each type newest-first, stopping as soon as it
 crosses the 2-year cutoff, uses the full body when present (else the summary),
 and carries taxonomy terms as `<category>`. XML-illegal characters in the
@@ -337,7 +318,7 @@ The feed list is the `FEEDS` table in `scobserver.py`.
 
 - Depends on SCO's WordPress REST endpoints staying public; if they lock the API
   down, this needs rework.
-- `cases` / `journal` / `court_events` don't expose a REST body, so their items
+- `cases` / `journal` don't expose a REST body, so their items
   carry the SEO summary rather than the full page.
 - Unofficial and unaffiliated; content © Supreme Court Observer.
 
@@ -354,10 +335,6 @@ tracks Indian bills, acts, budgets and parliamentary work — built by
 | Bills | bills tracked by PRS, with current status | [feed.xml](https://nappingcats.github.io/pib_feed/prs-bills/feed.xml) |
 | Acts | Acts of Parliament (PDF each) | [feed.xml](https://nappingcats.github.io/pib_feed/prs-acts/feed.xml) |
 | Budgets | union budget analyses | [feed.xml](https://nappingcats.github.io/pib_feed/prs-budgets/feed.xml) |
-| Vital Stats | per-session parliamentary functioning | [feed.xml](https://nappingcats.github.io/pib_feed/prs-vital-stats/feed.xml) |
-| Monthly Policy Review | monthly policy reviews | [feed.xml](https://nappingcats.github.io/pib_feed/prs-policy-reviews/feed.xml) |
-| Discussion Papers | research discussion papers | [feed.xml](https://nappingcats.github.io/pib_feed/prs-discussion-papers/feed.xml) |
-| Report Summaries | summaries of parliamentary committee reports | [feed.xml](https://nappingcats.github.io/pib_feed/prs-report-summaries/feed.xml) |
 
 ## Why this exists
 
@@ -395,8 +372,6 @@ The feed list is the `FEEDS` table in `prsindia.py`.
   redesign may need selector updates.
 - Dates are year-accurate and order-preserving but **not** exact publication
   dates (PRS exposes none).
-- The Monthly Policy Review listing links only the current month; that feed grows
-  one item per month via history-merge.
 - Unofficial and unaffiliated; content © PRS Legislative Research.
 
 ---
@@ -411,12 +386,8 @@ RSS feeds for the [Manohar Parrikar Institute for Defence Studies and Analyses](
 |------|------|------|
 | Comments | commentaries (IDSA Comments) | [feed.xml](https://nappingcats.github.io/pib_feed/idsa-comments/feed.xml) |
 | Issue Briefs | issue briefs | [feed.xml](https://nappingcats.github.io/pib_feed/idsa-issue-briefs/feed.xml) |
-| Occasional Papers | occasional papers | [feed.xml](https://nappingcats.github.io/pib_feed/idsa-occasional-papers/feed.xml) |
 | Monographs | monographs | [feed.xml](https://nappingcats.github.io/pib_feed/idsa-monographs/feed.xml) |
-| Books | books published by MP-IDSA | [feed.xml](https://nappingcats.github.io/pib_feed/idsa-books/feed.xml) |
-| Policy Briefs | policy briefs | [feed.xml](https://nappingcats.github.io/pib_feed/idsa-policy-briefs/feed.xml) |
 | Backgrounders | backgrounders | [feed.xml](https://nappingcats.github.io/pib_feed/idsa-backgrounders/feed.xml) |
-| West Asia War Analyses | West Asia war analyses | [feed.xml](https://nappingcats.github.io/pib_feed/idsa-west-asia-war-analyses/feed.xml) |
 
 ## Why this exists
 
@@ -430,10 +401,10 @@ Each publication listing is, however, plain server-rendered HTML.
 
 `idsa.py` scrapes `/publication-type/<slug>` (paginated `/page/N`), parsing each
 `<article class="author-of-the-post ...">` block for its link, title, summary,
-authors and date. Unlike PRS, commentaries and briefs carry a real
-`Month DD, YYYY` date, used directly; books, monographs and occasional papers
-carry only a year, anchored mid-year and offset by listing rank to preserve
-newest-first order. Once seen, an item keeps its date through history-merge.
+authors and date. Unlike PRS, comments and issue briefs carry a real
+`Month DD, YYYY` date, used directly; monographs carry only a year, anchored
+mid-year and offset by listing rank to preserve newest-first order. Once seen,
+an item keeps its date through history-merge.
 
 Crawling is polite: each run walks pages newest-first and **stops at the first
 page whose every item is already published**, so steady-state runs fetch ~1 page
@@ -453,9 +424,8 @@ The feed list is the `FEEDS` table in `idsa.py`.
 
 - No API, so these feeds depend on MP-IDSA's current HTML
   (`author-of-the-post` markup); a redesign may need selector updates.
-- Book/monograph/occasional-paper dates are year-accurate and order-preserving
-  but **not** exact (the listing exposes only a year for them).
-- Journals, news digests and event reports are separate sections not yet covered.
+- Monograph dates are year-accurate and order-preserving but **not** exact
+  (the listing exposes only a year for them).
 - Unofficial and unaffiliated; content © MP-IDSA.
 
 ---
@@ -468,8 +438,6 @@ RSS feeds for the [Economic Advisory Council to the Prime Minister](https://eacp
 | Feed | What | GitHub Pages |
 |------|------|------|
 | Reports | reports, working papers and monographs — items link directly to the PDFs | [feed.xml](https://nappingcats.github.io/pib_feed/eacpm-reports/feed.xml) |
-| Articles | full-text articles by EAC-PM members (What's New → Articles) | [feed.xml](https://nappingcats.github.io/pib_feed/eacpm-articles/feed.xml) |
-| In the News | full-text media coverage republished on the site | [feed.xml](https://nappingcats.github.io/pib_feed/eacpm-news/feed.xml) |
 
 ## Why this exists
 
@@ -479,7 +447,7 @@ however, plain server-rendered HTML.
 
 ## How it works
 
-`eacpm.py` scrapes three listing pages:
+`eacpm.py` scrapes the reports listing page:
 
 - **Reports** (`/reports/`) — one Bootstrap card per report with title, summary
   paragraph and a **direct PDF link** (used as the item link). The page's
@@ -488,15 +456,10 @@ however, plain server-rendered HTML.
   carry no visible date, so the `/wp-content/uploads/YYYY/MM/` segment of the
   PDF URL is used (month precision), rank-offset to preserve newest-first
   listing order.
-- **Articles** (`/whats-new/`, Articles tab) and **In the News** (`/news/`) —
-  each new item's detail page is fetched and the **full article body** is
-  extracted between the page heading and the social-share block, along with the
-  hero image and (for news) the outlet name and the detail-page date.
 
-Steady state is polite: detail pages are fetched only for items not already in
-the published feed, so routine runs fetch just the three listing pages. Feeds
-merge their previously-published copies (history-merge), so items and dates are
-stable once seen.
+Steady state is polite: only the single `/reports/` listing page is fetched.
+The feed merges its previously-published copy (history-merge), so items and
+dates are stable once seen.
 
 ## Configuration (env vars)
 
@@ -513,7 +476,7 @@ The feed list is the `FEEDS` table in `eacpm.py`.
   redesign may need selector updates.
 - Report dates are month-accurate and order-preserving but **not** exact (taken
   from the PDF upload path).
-- The listing pages are not paginated today (all items on one page); if the
+- The `/reports/` listing is not paginated today (all items on one page); if the
   site adds pagination, only the first page will be scanned.
 - Unofficial and unaffiliated; content © EAC-PM / Government of India.
 
@@ -523,13 +486,12 @@ The feed list is the `FEEDS` table in `eacpm.py`.
 
 `ie_epaper.py` builds PDF feeds from the Indian Express epaper
 (`epaper.indianexpress.com`), a ReadWhere-powered site. It currently covers
-three free titles; add rows to its `FEEDS` list for more.
+two free titles; add rows to its `FEEDS` list for more.
 
 | Feed | Content | Link |
 | --- | --- | --- |
 | UPSC Essentials | full magazine PDFs, Jan 2026 on | [feed.xml](https://nappingcats.github.io/pib_feed/upsc-essentials/feed.xml) |
 | Delhi Edition | daily newspaper PDFs, Jun 2026 on | [feed.xml](https://nappingcats.github.io/pib_feed/indianexpress-delhi/feed.xml) |
-| EYE | Sunday supplement PDFs, Jun 2026 on | [feed.xml](https://nappingcats.github.io/pib_feed/indianexpress-eye/feed.xml) |
 
 ## How it works
 
@@ -542,8 +504,8 @@ keyed by a per-title id and a `type` (`magazine` or `newspaper`):
   date → issue index (a daily goes back years; a magazine may list only ~50).
 - `download/fullpdflink/<type>/<titleId>/<issueId>` → JSON with a signed `fullpdf`
   URL on `dcache.epapr.in` / `pcache.epapr.in` (Google Cloud Storage). A **wrong
-  titleId or wrong type returns `status:false`**, so both are required. Note the
-  EYE supplement is `type=magazine`, the daily editions are `type=newspaper`.
+  titleId or wrong type returns `status:false`**, so both are required. Note
+  UPSC Essentials is `type=magazine`, the daily editions are `type=newspaper`.
 
 That PDF URL is signed with an `Expires=` about a month out, so it is not durable
 enough for a feed. As with the Vision IAS / NextIAS feeds, each in-range issue's
@@ -685,10 +647,206 @@ python niti.py && python archive_pdfs.py
 
 ---
 
+# The Economist feeds — full-text (unofficial)
+
+Full-text RSS feeds for [The Economist](https://www.economist.com), built by
+`economist.py`.
+
+| Feed | What | GitHub Pages |
+|------|------|------|
+| Finance & economics | the weekly Finance & economics articles | [feed.xml](https://nappingcats.github.io/pib_feed/economist-finance-and-economics/feed.xml) |
+| Schools brief | the explainer essays / primers | [feed.xml](https://nappingcats.github.io/pib_feed/economist-schools-brief/feed.xml) |
+| Economic & financial indicators | the weekly economic-data & chart pages | [feed.xml](https://nappingcats.github.io/pib_feed/economist-indicators/feed.xml) |
+
+## Why this exists
+
+The Economist is doubly locked down: Cloudflare fronts the whole site with a
+JavaScript challenge (plain `requests` / spoofed bot UAs get 403), and the
+articles sit behind the Zephr paywall. There is no usable full-text feed.
+
+## How it works
+
+Both walls are cleared with a single trick from the Bypass-Paywalls-Clean rule
+for economist.com — a custom mobile User-Agent whose tail token (`Liskov`) the
+site treats as a whitelisted crawler; with it a plain GET returns 200 and the
+**full** article payload. The site is a Next.js app, so each page embeds a
+`<script id="__NEXT_DATA__">` JSON blob: listing pages expose `content.articles`
+(headline, url, ISO date, image); article pages expose `content.body` as typed
+components (PARAGRAPH with ready `textHtml`, IMAGE with caption/credit), from
+which the body is rebuilt.
+
+`content-assets` images are Cloudflare-protected too, so a reader can't hotlink
+them. In archive mode (`ECON_ARCHIVE_MODE=archive` + `ECON_ARCHIVE_BASE_URL`)
+each body image is rewritten to a durable copy on a GitHub Release and recorded
+in a manifest under `ECON_ARCHIVE_MANIFEST_DIR`; `archive_pdfs.py` (run with the
+Liskov UA) does the mirroring. This uses a **separate** manifest dir + release
+tag (`image-archive`) from the PDF feeds. Each feed merges its previously
+published copy so history survives past the ~12-item scan window.
+
+## Configuration (env vars)
+
+| Var | Default | Meaning |
+|-----|---------|---------|
+| `ECON_PUBLISHED_BASE_URL` | – | Live-site base for history-merge |
+| `ECON_ARCHIVE_MODE` | `link` | `archive` rewrites body images to the release copy |
+| `ECON_ARCHIVE_BASE_URL` | – | Release base URL images point at in archive mode |
+| `ECON_ARCHIVE_MANIFEST_DIR` | `image_archive` | Where image manifests are written |
+| `ECON_OUT_DIR` | `public` | Output directory |
+
+The feed list is the `FEEDS` table in `economist.py`.
+
+## Caveats
+
+- Depends on the Liskov-UA whitelist and the `__NEXT_DATA__` shape; if either
+  changes, the extractor needs rework.
+- Interactive "primers" carry no `__NEXT_DATA__` body and degrade to teaser
+  image + rubric + link.
+- Unofficial and unaffiliated; content © The Economist.
+
+---
+
+# Project Syndicate feed — full-text (unofficial)
+
+A full-text RSS feed for [Project Syndicate](https://www.project-syndicate.org),
+built by `project_syndicate.py`.
+
+| Feed | What | GitHub Pages |
+|------|------|------|
+| Commentaries | full-text Project Syndicate commentaries | [feed.xml](https://nappingcats.github.io/pib_feed/project-syndicate/feed.xml) |
+
+## Why this exists
+
+Project Syndicate's official `/rss` is metadata only — each item carries a
+title, author and a one-paragraph abstract, with an empty `<content:encoded>` —
+and the full commentary sits behind a register/subscribe wall.
+
+## How it works
+
+The Bypass-Paywalls-Clean rule for the site uses a Googlebot User-Agent (the
+site serves the full body to Google for SEO). The UA alone isn't enough — the
+site verifies the crawler by client IP — but it trusts the `X-Forwarded-For`
+header, so Googlebot UA **plus** `X-Forwarded-For: <a googlebot IP>` unlocks the
+complete article. The body is read from the `<p data-line-id="...">` paragraphs
+plus the og:image hero; images are on PS's own CDN and hotlink fine. Only
+articles not already published are fetched, and the feed merges its previously
+published copy so it grows past the 20-item RSS window.
+
+## Configuration (env vars)
+
+| Var | Default | Meaning |
+|-----|---------|---------|
+| `PS_XFF` | `66.249.66.1` | Googlebot `X-Forwarded-For` IP used to satisfy the crawler check |
+| `PS_RSS_URL` | `…/rss` | Source metadata feed |
+| `PS_PUBLISHED_BASE_URL` | – | Live-site base for history-merge |
+| `PS_OUT_DIR` | `public` | Output directory |
+
+## Caveats
+
+- Depends on the Googlebot-UA + `X-Forwarded-For` bypass and the
+  `data-line-id` paragraph markup; either changing needs rework.
+- Subscriber-only items that don't unlock are skipped; history-merge keeps
+  whatever was captured earlier.
+- Unofficial and unaffiliated; content © Project Syndicate.
+
+---
+
+# The Indian Express feeds — full-text (unofficial)
+
+Full-text RSS feeds for the section fronts of
+[The Indian Express](https://indianexpress.com), built by `indianexpress.py`.
+(These are the web sections; the epaper PDF feeds are a separate script — see
+above.)
+
+| Feed | What | GitHub Pages |
+|------|------|------|
+| Explained | full-text of the Explained section | [feed.xml](https://nappingcats.github.io/pib_feed/indianexpress-explained/feed.xml) |
+| Opinion | full-text of the Opinion section | [feed.xml](https://nappingcats.github.io/pib_feed/indianexpress-opinion/feed.xml) |
+
+## Why this exists
+
+Indian Express publishes per-section feeds (`…/section/<name>/feed/`), but they
+are metadata only — title, link and date with an empty `<content:encoded>`.
+
+## How it works
+
+The article pages are served in full; the "premium" wall is a client-side
+Evolok JavaScript overlay (the Bypass-Paywalls rule simply blocks that script).
+A server-side fetch never runs the JS, so the complete article is already in the
+HTML inside `<div id="pcl-full-content">`. The body is rebuilt from that
+container's block elements (paragraphs, sub-headings, inline images), skipping
+ad / Taboola / "also read" widgets; a JSON-LD `articleBody` is used only to
+sanity-check coverage. Images are on IE's own CDN and hotlink fine. Only
+articles not already published are fetched (capped by `IE_MAX_FETCH`), and each
+feed merges its previously published copy.
+
+## Configuration (env vars)
+
+| Var | Default | Meaning |
+|-----|---------|---------|
+| `IE_MAX_FETCH` | `60` | Max new article pages fetched per feed per run |
+| `IE_PUBLISHED_BASE_URL` | – | Live-site base for history-merge |
+| `IE_OUT_DIR` | `public` | Output directory |
+
+The feed list is the `FEEDS` table in `indianexpress.py`.
+
+## Caveats
+
+- Depends on the `pcl-full-content` container and the Evolok-overlay bypass; a
+  redesign may need selector updates.
+- Unofficial and unaffiliated; content © The Indian Express.
+
+---
+
+# IPCS feed (unofficial)
+
+An RSS feed for the
+[Institute of Peace and Conflict Studies](https://www.ipcs.org) (IPCS), built by
+`ipcs.py`.
+
+| Feed | What | GitHub Pages |
+|------|------|------|
+| Commentaries | full-text IPCS commentaries | [feed.xml](https://nappingcats.github.io/pib_feed/ipcs-commentaries/feed.xml) |
+
+## Why this exists
+
+IPCS publishes **no RSS at all**. The site is classic server-rendered PHP: each
+item is an article at `comm_select.php?articleNo=<n>` with its full text in the
+page, and each content type has a paginated listing (`<section>.php?pageno=N`,
+newest first).
+
+## How it works
+
+`ipcs.py` walks the listing newest-first (stopping at the first page whose items
+are all already published), reading each row's link, title, author, `09 Jul,
+2026`-style date, article number and teaser, then scrapes the full body from
+each new article page (the paragraphs after the date stamp). The feed merges its
+previously published copy so history outlives the listings.
+
+## Configuration (env vars)
+
+| Var | Default | Meaning |
+|-----|---------|---------|
+| `IPCS_MAX_PAGES` | `10` | Listing pages walked per feed per run |
+| `IPCS_MAX_FETCH` | `40` | Max new article pages fetched per feed per run |
+| `IPCS_PUBLISHED_BASE_URL` | – | Live-site base for history-merge |
+| `IPCS_OUT_DIR` | `public` | Output directory |
+
+The feed list is the `FEEDS` table in `ipcs.py`.
+
+## Caveats
+
+- **ipcs.org is unreachable from some networks** (it connects fine from GitHub
+  runners). When the source can't be fetched, the previously-published feed is
+  republished unchanged, so local runs degrade gracefully.
+- Depends on the site's current PHP listing / article markup.
+- Unofficial and unaffiliated; content © IPCS.
+
+---
+
 # OPML
 
 Ready-to-import OPML bundles live in `OPML/`: `pib.opml`, `newsonair.opml`,
 `current-affairs.opml`, `mygov.opml`, `scobserver.opml`, `prsindia.opml`,
 `idsa.opml`, `eacpm.opml`, `economist.opml`, `projectsyndicate.opml`,
 `indianexpress.opml` (includes UPSC Essentials), `indiatoday.opml`, `niti.opml`,
-and `all.opml` (every feed, grouped).
+`ipcs.opml`, and `all.opml` (every feed, grouped).

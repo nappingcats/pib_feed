@@ -12,24 +12,13 @@ however, plain server-rendered HTML, so feeds are reconstructed by scraping:
                                 (Monographs/Occasional Papers, Our Reports,
                                 Partner Reports, Working Papers) partition the
                                 "All" tab exactly and are used to label items.
-  eacpm-articles  /whats-new/   the "Articles" tab lists /article/<slug>/ pages
-                                with a listing date; each detail page carries
-                                the **full article body**, extracted between the
-                                heading and the social-share block.
-  eacpm-news      /news/        media coverage; /news/<slug>/ detail pages carry
-                                a real date and the **full article body** (same
-                                markup as articles), plus the outlet name shown
-                                on the listing card.
 
 Dates: reports carry no visible date, so the `/wp-content/uploads/YYYY/MM/`
 segment of the PDF URL is used (month precision) with a listing-rank offset to
-preserve newest-first order (as with IDSA year-only items). Articles use the
-listing date ("24, June 2022"); news uses the detail-page date
-("25th January 2022, 8:00 pm"). Once an item is seen it keeps its date via
-history-merge, so ordering is stable.
+preserve newest-first order (as with IDSA year-only items). Once an item is
+seen it keeps its date via history-merge, so ordering is stable.
 
-Steady state is polite: detail pages are only fetched for items not already in
-the published feed, so routine runs fetch just the three listing pages.
+Steady state is polite: only the single `/reports/` listing page is fetched.
 
 Output: public/<key>/feed.xml + public/<key>/index.html, each merging its
 previously-published copy so history survives a transient scrape failure.
@@ -68,18 +57,6 @@ FEEDS = {
         "desc": "Unofficial feed of EAC-PM reports, working papers and monographs (items link directly to the PDFs).",
         "page": f"{BASE}/reports/",
         "max_items": 400,
-    },
-    "eacpm-articles": {
-        "title": "Articles - EAC-PM",
-        "desc": "Unofficial full-text feed of articles by EAC-PM members (What's New → Articles).",
-        "page": f"{BASE}/whats-new/",
-        "max_items": 300,
-    },
-    "eacpm-news": {
-        "title": "In the News - EAC-PM",
-        "desc": "Unofficial full-text feed of media coverage republished on eacpm.gov.in.",
-        "page": f"{BASE}/news/",
-        "max_items": 300,
     },
 }
 
@@ -134,28 +111,11 @@ def cdata(text: str) -> str:
 
 # --- scraping -----------------------------------------------------------------
 TAG_RE = re.compile(r"<[^>]+>")
-COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
-
-MONTHS = {m: i for i, m in enumerate(
-    ["", "January", "February", "March", "April", "May", "June",
-     "July", "August", "September", "October", "November", "December"], 0)}
-# "25th January 2022, 8:00 pm" / "24, June 2022"
-TEXT_DATE_RE = re.compile(r"(\d{1,2})(?:st|nd|rd|th)?,?\s+([A-Z][a-z]+),?\s+(\d{4})")
 UPLOAD_DATE_RE = re.compile(r"/wp-content/uploads/(\d{4})/(\d{2})/")
 
 
 def clean(text: str) -> str:
     return html.unescape(TAG_RE.sub(" ", text)).replace("\xa0", " ").strip()
-
-
-def parse_text_date(text: str) -> dt.datetime | None:
-    m = TEXT_DATE_RE.search(text)
-    if not m or m.group(2) not in MONTHS:
-        return None
-    try:
-        return dt.datetime(int(m.group(3)), MONTHS[m.group(2)], int(m.group(1)), 12, tzinfo=IST)
-    except ValueError:
-        return None
 
 
 # The reports page repeats every card in an "All" tab plus exactly one category
@@ -203,44 +163,6 @@ def parse_reports(page: str) -> list[dict]:
             }
         )
     return out
-
-
-# What's New → Articles tab: cards with a post-date and an /article/ link.
-ARTICLE_CARD_RE = re.compile(
-    r'<div class="post-date">\s*(.*?)\s*</div>\s*'
-    r'<a href="(https://eacpm\.gov\.in/article/[^"]+)">\s*<h2>(.*?)</h2>',
-    re.S,
-)
-# /news/ listing: outlet name, link and headline per card.
-NEWS_CARD_RE = re.compile(
-    r'<a href="(https://eacpm\.gov\.in/news/[^"]+)">\s*<div class="card">\s*'
-    r"<span[^>]*>(.*?)</span>.*?<h2>(.*?)</h2>",
-    re.S,
-)
-
-# Detail pages (/article/ and /news/ share the markup): the body sits between
-# the heading and the social-share block; the date div is sometimes commented.
-DETAIL_BODY_RE = re.compile(
-    r'<h2 class="heading">.*?</h2>(.*?)<div class="social-share">', re.S
-)
-DETAIL_DATE_RE = re.compile(r'<div class="date">\s*(.*?)\s*</div>', re.S)
-DATE_DIV_RE = re.compile(r'\s*<div class="date">.*?</div>', re.S)
-HERO_IMG_RE = re.compile(
-    r'<img src="(https://eacpm\.gov\.in/wp-content/uploads/[^"]+)" class="img-fluid'
-)
-
-
-def parse_detail(page: str) -> tuple[str, dt.datetime | None, str]:
-    """Return (body_html, date, hero_img_url) from an article/news detail page."""
-    m = DETAIL_BODY_RE.search(page)
-    if not m:
-        return "", None, ""
-    raw = m.group(1)
-    dm = DETAIL_DATE_RE.search(raw)
-    when = parse_text_date(clean(dm.group(1))) if dm else None
-    body = DATE_DIV_RE.sub("", COMMENT_RE.sub("", raw)).strip()
-    heros = HERO_IMG_RE.findall(page[: m.start(1)])
-    return body, when, heros[-1] if heros else ""
 
 
 # --- feed I/O -----------------------------------------------------------------
@@ -372,68 +294,12 @@ def run_reports(session: requests.Session, now: dt.datetime) -> int:
     return kept
 
 
-def run_fulltext(session: requests.Session, key: str, cards: list[dict], now: dt.datetime) -> int:
-    """Shared builder for articles and news: fetch each new detail page."""
-    print(f"[{key}]")
-    merged = load_published(session, key)
-    new = 0
-    for rank, it in enumerate(cards):
-        if it["link"] in merged:
-            continue
-        detail = fetch(session, it["link"])
-        body, when, hero = parse_detail(detail) if detail else ("", None, "")
-        if when is None:
-            when = it.get("list_date") or (now - dt.timedelta(seconds=rank))
-        parts = []
-        if it.get("source"):
-            parts.append(f"<p><strong>Source:</strong> {escape(it['source'])}</p>")
-        if hero:
-            parts.append(f'<img src="{escape(hero)}" />')
-        parts.append(body or f'<p><a href="{escape(it["link"])}">Read on eacpm.gov.in</a></p>')
-        merged[it["link"]] = (when, render_item(it["link"], it["title"], "\n".join(parts), when).strip())
-        new += 1
-    xml, kept = build_feed(key, merged)
-    write_feed(key, xml, kept)
-    print(f"  {key}: +{new} new, feed now {kept}")
-    return kept
-
-
-def article_cards(page: str) -> list[dict]:
-    out, seen = [], set()
-    for date_text, link, title in ARTICLE_CARD_RE.findall(page):
-        link = html.unescape(link).strip()
-        if link in seen:
-            continue
-        seen.add(link)
-        out.append({"link": link, "title": clean(title), "list_date": parse_text_date(clean(date_text))})
-    return out
-
-
-def news_cards(page: str) -> list[dict]:
-    out, seen = [], set()
-    for link, source, title in NEWS_CARD_RE.findall(page):
-        link = html.unescape(link).strip()
-        if link in seen:
-            continue
-        seen.add(link)
-        out.append({"link": link, "title": clean(title), "source": clean(source)})
-    return out
-
-
 # --- main ---------------------------------------------------------------------
 def main() -> int:
     session = make_session()
     now = dt.datetime.now(IST)
     counts: dict[str, int] = {}
     counts["eacpm-reports"] = run_reports(session, now)
-    page = fetch(session, FEEDS["eacpm-articles"]["page"])
-    counts["eacpm-articles"] = run_fulltext(
-        session, "eacpm-articles", article_cards(page) if page else [], now
-    )
-    page = fetch(session, FEEDS["eacpm-news"]["page"])
-    counts["eacpm-news"] = run_fulltext(
-        session, "eacpm-news", news_cards(page) if page else [], now
-    )
     print("Done:", counts)
     return 0
 

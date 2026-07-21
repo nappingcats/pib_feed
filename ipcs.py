@@ -59,41 +59,6 @@ FEEDS = [
         "desc": "Unofficial full-text feed of IPCS commentaries.",
         "max_items": 400,
     },
-    {
-        "key": "ipcs-issue-briefs",
-        "page": "issue_briefs.php",
-        "title": "Issue Briefs - IPCS",
-        "desc": "Unofficial full-text feed of IPCS issue briefs.",
-        "max_items": 300,
-    },
-    {
-        "key": "ipcs-special-reports",
-        "page": "special_reports.php",
-        "title": "Special Reports - IPCS",
-        "desc": "Unofficial full-text feed of IPCS special reports.",
-        "max_items": 300,
-    },
-    {
-        "key": "ipcs-research-papers",
-        "page": "research_paper.php",
-        "title": "Research Papers - IPCS",
-        "desc": "Unofficial full-text feed of IPCS research papers.",
-        "max_items": 300,
-    },
-    {
-        "key": "ipcs-book-reviews",
-        "page": "ipcs_books_reviews.php",
-        "title": "Book Reviews - IPCS",
-        "desc": "Unofficial full-text feed of IPCS book reviews.",
-        "max_items": 200,
-    },
-    {
-        "key": "ipcs-discussion-reports",
-        "page": "discussion_reports.php",
-        "title": "Discussion Reports - IPCS",
-        "desc": "Unofficial full-text feed of IPCS discussion reports.",
-        "max_items": 300,
-    },
 ]
 
 

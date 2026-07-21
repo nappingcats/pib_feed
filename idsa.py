@@ -19,15 +19,11 @@ Feeds built here (one per publication type):
 
   idsa-comments                /publication-type/comments
   idsa-issue-briefs            /publication-type/issuebrief
-  idsa-occasional-papers       /publication-type/occasionalpaper
   idsa-monographs              /publication-type/monograph
-  idsa-books                   /publication-type/book
-  idsa-policy-briefs           /publication-type/policybrief
   idsa-backgrounders           /publication-type/backgrounder
-  idsa-west-asia-war-analyses  /publication-type/west-asia-war-analyses
 
 Dates: commentaries/briefs carry a full "Month DD, YYYY" date, used directly.
-Books/monographs/occasional papers carry only a year; those are anchored mid-year
+Monographs carry only a year; those are anchored mid-year
 and offset by listing rank to preserve newest-first order (as with PRS). Once an
 item is seen it keeps its date via history-merge, so ordering is stable.
 
@@ -83,31 +79,10 @@ FEEDS = [
         "max_items": 500,
     },
     {
-        "key": "idsa-occasional-papers",
-        "title": "Occasional Papers - MP-IDSA",
-        "desc": "Unofficial feed of MP-IDSA Occasional Papers.",
-        "slug": "occasionalpaper",
-        "max_items": 300,
-    },
-    {
         "key": "idsa-monographs",
         "title": "Monographs - MP-IDSA",
         "desc": "Unofficial feed of MP-IDSA Monographs.",
         "slug": "monograph",
-        "max_items": 300,
-    },
-    {
-        "key": "idsa-books",
-        "title": "Books - MP-IDSA",
-        "desc": "Unofficial feed of books published by MP-IDSA.",
-        "slug": "book",
-        "max_items": 400,
-    },
-    {
-        "key": "idsa-policy-briefs",
-        "title": "Policy Briefs - MP-IDSA",
-        "desc": "Unofficial feed of MP-IDSA Policy Briefs.",
-        "slug": "policybrief",
         "max_items": 300,
     },
     {
@@ -116,13 +91,6 @@ FEEDS = [
         "desc": "Unofficial feed of MP-IDSA Backgrounders.",
         "slug": "backgrounder",
         "max_items": 300,
-    },
-    {
-        "key": "idsa-west-asia-war-analyses",
-        "title": "West Asia War Analyses - MP-IDSA",
-        "desc": "Unofficial feed of MP-IDSA West Asia War Analyses.",
-        "slug": "west-asia-war-analyses",
-        "max_items": 200,
     },
 ]
 

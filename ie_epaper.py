@@ -19,7 +19,6 @@ a `type` (`magazine` or `newspaper`):
 Titles covered (all currently free):
   upsc-essentials       magazine  23812   UPSC Essentials magazine
   indianexpress-delhi   newspaper 226     Delhi daily (national edition)
-  indianexpress-eye     magazine  269     EYE Sunday supplement
 
 Because the PDF URL is signed and expires, it is not durable enough for a feed.
 So (like the Vision IAS / NextIAS feeds) each in-range issue's PDF is mirrored
@@ -89,16 +88,6 @@ FEEDS = [
         "desc": "Unofficial feed of the daily Indian Express Delhi edition (epaper) PDFs.",
         "min_date": "2026-06-01",
         "max_items": 400,
-    },
-    {
-        "key": "indianexpress-eye",
-        "type": "magazine",
-        "title_id": "269",
-        "name": "EYE",
-        "title": "EYE - Indian Express",
-        "desc": "Unofficial feed of the Indian Express EYE Sunday supplement (epaper) PDFs.",
-        "min_date": "2026-06-01",
-        "max_items": 120,
     },
 ]
 

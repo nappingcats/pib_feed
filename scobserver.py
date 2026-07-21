@@ -6,7 +6,7 @@ stale (a single item from April 2022) and its editorial content lives in custom
 post types that the default feed never touches. Every one of those types is,
 however, exposed cleanly through the WordPress REST API — title, permalink,
 published + modified timestamps, a ready-made summary (Yoast description) and
-embedded taxonomy terms — with the long-form types (`reports`, `scolr`) also
+embedded taxonomy terms — with the long-form type (`reports`) also
 returning full rendered bodies.
 
 This script reconstructs clean, full-text, history-retaining RSS 2.0 feeds from
@@ -15,8 +15,6 @@ those REST endpoints (no HTML scraping):
   cases         the case docket at /cases/ — one entry per matter tracked
   journal       analysis / opinion articles (their main editorial output)
   reports       per-day argument & hearing summaries (full body)
-  court_events  day-wise hearing coverage
-  scolr         SC Observer Law Reports — judgment / case-law digests (full body)
 
 Only items from the last N years (default 2) are included — a rolling window
 applied to both freshly-fetched items and the previously-published feed, so old
@@ -86,22 +84,6 @@ FEEDS = [
         "rest_base": "reports",
         "title": "Reports - Supreme Court Observer",
         "desc": "Unofficial full-text feed of Supreme Court Observer hearing and argument summaries.",
-        "full": True,
-        "max_items": 500,
-    },
-    {
-        "key": "scobserver-court-events",
-        "rest_base": "court_events",
-        "title": "Court Events - Supreme Court Observer",
-        "desc": "Unofficial feed of Supreme Court Observer day-wise hearing coverage.",
-        "full": False,
-        "max_items": 500,
-    },
-    {
-        "key": "scobserver-scolr",
-        "rest_base": "scolr",
-        "title": "Law Reports (SCOLR) - Supreme Court Observer",
-        "desc": "Unofficial full-text feed of Supreme Court Observer Law Reports (judgment digests).",
         "full": True,
         "max_items": 500,
     },
