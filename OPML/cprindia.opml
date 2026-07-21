@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>CPR India feeds (unofficial)</title>
+  </head>
+  <body>
+      <outline text="CPR (Centre for Policy Research)" title="CPR (Centre for Policy Research)">
+        <outline type="rss" text="Working Papers - CPR" title="Working Papers - CPR" xmlUrl="https://nappingcats.github.io/pib_feed/cpr-working-papers/feed.xml" htmlUrl="https://cprindia.org/working-papers/"/>
+        <outline type="rss" text="Policy Briefs &amp; Reports - CPR" title="Policy Briefs &amp; Reports - CPR" xmlUrl="https://nappingcats.github.io/pib_feed/cpr-policy-briefs-reports/feed.xml" htmlUrl="https://cprindia.org/policy-briefs-reports/"/>
+        <outline type="rss" text="Journal Articles - CPR" title="Journal Articles - CPR" xmlUrl="https://nappingcats.github.io/pib_feed/cpr-journal-articles/feed.xml" htmlUrl="https://cprindia.org/journal-articles/"/>
+        <outline type="rss" text="Books - CPR" title="Books - CPR" xmlUrl="https://nappingcats.github.io/pib_feed/cpr-books/feed.xml" htmlUrl="https://cprindia.org/book/"/>
+        <outline type="rss" text="Book Chapters - CPR" title="Book Chapters - CPR" xmlUrl="https://nappingcats.github.io/pib_feed/cpr-book-chapters/feed.xml" htmlUrl="https://cprindia.org/book-chapters/"/>
+        <outline type="rss" text="Opinion &amp; Commentary - CPR" title="Opinion &amp; Commentary - CPR" xmlUrl="https://nappingcats.github.io/pib_feed/cpr-opinion/feed.xml" htmlUrl="https://cprindia.org/opinion-and-commentary/"/>
+        <outline type="rss" text="News &amp; Blogs - CPR" title="News &amp; Blogs - CPR" xmlUrl="https://nappingcats.github.io/pib_feed/cpr-news-blogs/feed.xml" htmlUrl="https://cprindia.org/news-blogs/"/>
+      </outline>
+  </body>
+</opml>
