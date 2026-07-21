@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>India Today magazine feed (unofficial, full-text)</title>
+  </head>
+  <body>
+      <outline text="India Today (unofficial, full-text)" title="India Today (unofficial, full-text)">
+        <outline type="rss" text="Magazine - India Today" title="Magazine - India Today" xmlUrl="https://nappingcats.github.io/pib_feed/indiatoday-magazine/feed.xml" htmlUrl="https://www.indiatoday.in/magazine"/>
+      </outline>
+  </body>
+</opml>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>MyGov PDF feeds (unofficial)</title>
+  </head>
+  <body>
+      <outline text="MyGov" title="MyGov">
+        <outline type="rss" text="Bharat Matters - MyGov" title="Bharat Matters - MyGov" xmlUrl="https://nappingcats.github.io/pib_feed/mygov_bharat_matters/feed.xml" htmlUrl="https://www.mygov.in/bharat-matters"/>
+        <outline type="rss" text="Pulse Newsletter - MyGov" title="Pulse Newsletter - MyGov" xmlUrl="https://nappingcats.github.io/pib_feed/mygov_pulse/feed.xml" htmlUrl="https://www.mygov.in/pulse-newsletter"/>
+        <outline type="rss" text="Read Mann Ki Baat - MyGov" title="Read Mann Ki Baat - MyGov" xmlUrl="https://nappingcats.github.io/pib_feed/mygov_mann_ki_baat/feed.xml" htmlUrl="https://www.mygov.in/read-mkb-more"/>
+      </outline>
+  </body>
+</opml>

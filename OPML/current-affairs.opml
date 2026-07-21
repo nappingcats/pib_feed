@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>Current-affairs PDF feeds (unofficial)</title>
+  </head>
+  <body>
+      <outline text="Current Affairs (Vision IAS / Made Easy / NextIAS)" title="Current Affairs (Vision IAS / Made Easy / NextIAS)">
+        <outline type="rss" text="PT 365 - Vision IAS" title="PT 365 - Vision IAS" xmlUrl="https://nappingcats.github.io/pib_feed/visionias-pt-365/feed.xml" htmlUrl="https://visionias.in/current-affairs/downloads/pt-365"/>
+        <outline type="rss" text="Mains 365 - Vision IAS" title="Mains 365 - Vision IAS" xmlUrl="https://nappingcats.github.io/pib_feed/visionias-mains-365/feed.xml" htmlUrl="https://visionias.in/current-affairs/downloads/mains-365"/>
+        <outline type="rss" text="Weekly Current Affairs - Made Easy" title="Weekly Current Affairs - Made Easy" xmlUrl="https://nappingcats.github.io/pib_feed/madeeasy-weekly/feed.xml" htmlUrl="https://www.madeeasy.in/weekly-current-affairs"/>
+        <outline type="rss" text="Monthly Current Affairs Magazine - NextIAS" title="Monthly Current Affairs Magazine - NextIAS" xmlUrl="https://nappingcats.github.io/pib_feed/nextias-magazine/feed.xml" htmlUrl="https://www.nextias.com/current-affairs-magazine"/>
+      </outline>
+  </body>
+</opml>

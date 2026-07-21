@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>Supreme Court Observer feeds (unofficial)</title>
+  </head>
+  <body>
+      <outline text="Supreme Court Observer" title="Supreme Court Observer">
+        <outline type="rss" text="Cases - Supreme Court Observer" title="Cases - Supreme Court Observer" xmlUrl="https://nappingcats.github.io/pib_feed/scobserver-cases/feed.xml" htmlUrl="https://www.scobserver.in/cases/"/>
+        <outline type="rss" text="Journal - Supreme Court Observer" title="Journal - Supreme Court Observer" xmlUrl="https://nappingcats.github.io/pib_feed/scobserver-journal/feed.xml" htmlUrl="https://www.scobserver.in/journal/"/>
+        <outline type="rss" text="Reports - Supreme Court Observer" title="Reports - Supreme Court Observer" xmlUrl="https://nappingcats.github.io/pib_feed/scobserver-reports/feed.xml" htmlUrl="https://www.scobserver.in/reports/"/>
+        <outline type="rss" text="Court Events - Supreme Court Observer" title="Court Events - Supreme Court Observer" xmlUrl="https://nappingcats.github.io/pib_feed/scobserver-court-events/feed.xml" htmlUrl="https://www.scobserver.in/court_events/"/>
+        <outline type="rss" text="Law Reports (SCOLR) - Supreme Court Observer" title="Law Reports (SCOLR) - Supreme Court Observer" xmlUrl="https://nappingcats.github.io/pib_feed/scobserver-scolr/feed.xml" htmlUrl="https://www.scobserver.in/supreme-court-observer-law-reports-scolr/"/>
+      </outline>
+  </body>
+</opml>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>The Economist feeds (unofficial, full-text)</title>
+  </head>
+  <body>
+      <outline text="The Economist (unofficial, full-text)" title="The Economist (unofficial, full-text)">
+        <outline type="rss" text="Economic &amp; financial indicators - Economist" title="Economic &amp; financial indicators - Economist" xmlUrl="https://nappingcats.github.io/pib_feed/economist-indicators/feed.xml" htmlUrl="https://www.economist.com/topics/economic-and-financial-indicators"/>
+        <outline type="rss" text="Schools brief - Economist" title="Schools brief - Economist" xmlUrl="https://nappingcats.github.io/pib_feed/economist-schools-brief/feed.xml" htmlUrl="https://www.economist.com/schools-brief"/>
+        <outline type="rss" text="Finance &amp; economics - Economist" title="Finance &amp; economics - Economist" xmlUrl="https://nappingcats.github.io/pib_feed/economist-finance-and-economics/feed.xml" htmlUrl="https://www.economist.com/finance-and-economics"/>
+      </outline>
+  </body>
+</opml>

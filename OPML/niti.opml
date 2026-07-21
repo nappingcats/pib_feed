@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>NITI Aayog publication feeds (unofficial, PDF)</title>
+  </head>
+  <body>
+      <outline text="NITI Aayog (unofficial, PDF)" title="NITI Aayog (unofficial, PDF)">
+        <outline type="rss" text="Division Reports - NITI Aayog" title="Division Reports - NITI Aayog" xmlUrl="https://nappingcats.github.io/pib_feed/niti-reports/feed.xml" htmlUrl="https://www.niti.gov.in/publications/division-reports"/>
+        <outline type="rss" text="Working Papers - NITI Aayog" title="Working Papers - NITI Aayog" xmlUrl="https://nappingcats.github.io/pib_feed/niti-working-papers/feed.xml" htmlUrl="https://www.niti.gov.in/publications/working-papers"/>
+        <outline type="rss" text="Research Papers - NITI Aayog" title="Research Papers - NITI Aayog" xmlUrl="https://nappingcats.github.io/pib_feed/niti-research-papers/feed.xml" htmlUrl="https://www.niti.gov.in/publications/research-paper"/>
+        <outline type="rss" text="Policy Papers - NITI Aayog" title="Policy Papers - NITI Aayog" xmlUrl="https://nappingcats.github.io/pib_feed/niti-policy-papers/feed.xml" htmlUrl="https://www.niti.gov.in/publications/policy-and-research/policy-paper"/>
+        <outline type="rss" text="Annual Reports - NITI Aayog" title="Annual Reports - NITI Aayog" xmlUrl="https://nappingcats.github.io/pib_feed/niti-annual-reports/feed.xml" htmlUrl="https://www.niti.gov.in/publication/annual-report"/>
+      </outline>
+  </body>
+</opml>

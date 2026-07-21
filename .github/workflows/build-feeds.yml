@@ -1,0 +1,183 @@
+name: Build PIB + News On AIR + Current Affairs RSS feeds
+
+on:
+  schedule:
+    # Press releases and AIR news move fast; the rest are infrequent. Hourly covers both.
+    - cron: "17 * * * *"
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - pib_feed.py
+      - newsonair_feed.py
+      - visioniaspt365.py
+      - meca.py
+      - mygov.py
+      - scobserver.py
+      - prsindia.py
+      - idsa.py
+      - eacpm.py
+      - economist.py
+      - project_syndicate.py
+      - indianexpress.py
+      - ie_epaper.py
+      - indiatoday.py
+      - niti.py
+      - archive_pdfs.py
+      - .github/workflows/build-feeds.yml
+
+permissions:
+  contents: write   # archive_pdfs.py uploads PDFs as release assets
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Build feeds
+        env:
+          PIB_WORKERS: "10"
+          # Merge with the already-published feeds so history is retained beyond
+          # the scan window. Each feed reads <base>/<key>/feed.xml.
+          PIB_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+        run: python pib_feed.py
+
+      - name: Build News On AIR feeds
+        env:
+          NOA_WORKERS: "10"
+          # Same history-retention trick: read each already-published feed from
+          # <base>/<key>/feed.xml and merge, so feeds grow past the source window.
+          NOA_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+        run: python newsonair_feed.py
+
+      - name: Build Vision IAS PT/Mains 365 feeds
+        env:
+          VIS_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+          # Point feed items at the archived PDFs on the release, and write the
+          # archive manifests consumed by archive_pdfs.py.
+          VIS_ARCHIVE_MODE: archive
+          VIS_ARCHIVE_BASE_URL: "https://github.com/${{ github.repository }}/releases/download/pdf-archive"
+        run: python visioniaspt365.py
+
+      - name: Build Made Easy + NextIAS current-affairs feeds
+        env:
+          MECA_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+          MECA_ARCHIVE_MODE: archive
+          MECA_ARCHIVE_BASE_URL: "https://github.com/${{ github.repository }}/releases/download/pdf-archive"
+        run: python meca.py
+
+      - name: Build MyGov PDF feeds
+        env:
+          MYGOV_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+          MYGOV_ARCHIVE_MODE: archive
+          MYGOV_ARCHIVE_BASE_URL: "https://github.com/${{ github.repository }}/releases/download/pdf-archive"
+        run: python mygov.py
+
+      - name: Build Supreme Court Observer feeds
+        env:
+          SCO_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+        run: python scobserver.py
+
+      - name: Build PRS Legislative Research feeds
+        env:
+          PRS_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+        run: python prsindia.py
+
+      - name: Build MP-IDSA feeds
+        env:
+          IDSA_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+        run: python idsa.py
+
+      - name: Build EAC-PM feeds
+        env:
+          EACPM_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+        run: python eacpm.py
+
+      - name: Build The Economist feeds
+        env:
+          ECON_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+          # Cloudflare-protected chart/photo images are mirrored to a separate
+          # release ("different folder": image-archive tag, not pdf-archive); items point there.
+          ECON_ARCHIVE_MODE: archive
+          ECON_ARCHIVE_BASE_URL: "https://github.com/${{ github.repository }}/releases/download/image-archive"
+        run: python economist.py
+
+      - name: Build Project Syndicate feed
+        env:
+          PS_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+        run: python project_syndicate.py
+
+      - name: Build The Indian Express feeds
+        env:
+          IE_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+        run: python indianexpress.py
+
+      - name: Build Indian Express epaper feeds (UPSC Essentials, Delhi, EYE)
+        env:
+          IE_EPAPER_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+          # Epaper PDFs live behind signed, expiring URLs, so mirror them to the
+          # release and point items at the durable asset.
+          IE_EPAPER_ARCHIVE_MODE: archive
+          IE_EPAPER_ARCHIVE_BASE_URL: "https://github.com/${{ github.repository }}/releases/download/pdf-archive"
+        run: python ie_epaper.py
+
+      - name: Build India Today magazine feed
+        env:
+          IT_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+        run: python indiatoday.py
+
+      - name: Build NITI Aayog publication feeds
+        env:
+          NITI_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+          # Report PDFs are archived to the release and items point at the durable asset.
+          NITI_ARCHIVE_MODE: archive
+          NITI_ARCHIVE_BASE_URL: "https://github.com/${{ github.repository }}/releases/download/pdf-archive"
+        run: python niti.py
+
+      - name: Mirror PDFs to the archive release
+        env:
+          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        run: python archive_pdfs.py
+
+      - name: Mirror Economist images to the image-archive release
+        env:
+          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          ARCHIVE_RELEASE_TAG: image-archive
+          ARCHIVE_MANIFEST_DIR: image_archive
+          # content-assets images 403 to a generic UA; use the whitelisted one.
+          ARCHIVE_UA: "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.6533.103 Mobile Safari/537.36 Liskov"
+        run: python archive_pdfs.py
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v5

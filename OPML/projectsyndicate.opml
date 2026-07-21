@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>Project Syndicate feed (unofficial, full-text)</title>
+  </head>
+  <body>
+      <outline text="Project Syndicate (unofficial, full-text)" title="Project Syndicate (unofficial, full-text)">
+        <outline type="rss" text="Commentaries - Project Syndicate" title="Commentaries - Project Syndicate" xmlUrl="https://nappingcats.github.io/pib_feed/project-syndicate/feed.xml" htmlUrl="https://www.project-syndicate.org/"/>
+      </outline>
+  </body>
+</opml>

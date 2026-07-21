@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>All feeds (unofficial)</title>
+  </head>
+  <body>
+      <outline text="PIB (Press Information Bureau)" title="PIB (Press Information Bureau)">
+        <outline type="rss" text="Press Releases - PIB" title="Press Releases - PIB" xmlUrl="https://nappingcats.github.io/pib_feed/press_releases/feed.xml" htmlUrl="https://www.pib.gov.in"/>
+        <outline type="rss" text="PMO - PIB" title="PMO - PIB" xmlUrl="https://nappingcats.github.io/pib_feed/pmo/feed.xml" htmlUrl="https://www.pib.gov.in"/>
+        <outline type="rss" text="Backgrounders - PIB" title="Backgrounders - PIB" xmlUrl="https://nappingcats.github.io/pib_feed/backgrounders/feed.xml" htmlUrl="https://www.pib.gov.in"/>
+        <outline type="rss" text="Factsheets - PIB" title="Factsheets - PIB" xmlUrl="https://nappingcats.github.io/pib_feed/factsheets/feed.xml" htmlUrl="https://www.pib.gov.in"/>
+        <outline type="rss" text="Features - PIB" title="Features - PIB" xmlUrl="https://nappingcats.github.io/pib_feed/features/feed.xml" htmlUrl="https://www.pib.gov.in"/>
+        <outline type="rss" text="FAQs - PIB" title="FAQs - PIB" xmlUrl="https://nappingcats.github.io/pib_feed/faqs/feed.xml" htmlUrl="https://www.pib.gov.in"/>
+      </outline>
+      <outline text="News On AIR" title="News On AIR">
+        <outline type="rss" text="Top News - News On AIR" title="Top News - News On AIR" xmlUrl="https://nappingcats.github.io/pib_feed/news/feed.xml" htmlUrl="https://newsonair.gov.in/"/>
+        <outline type="rss" text="National - News On AIR" title="National - News On AIR" xmlUrl="https://nappingcats.github.io/pib_feed/news_national/feed.xml" htmlUrl="https://newsonair.gov.in/category/national/"/>
+        <outline type="rss" text="International - News On AIR" title="International - News On AIR" xmlUrl="https://nappingcats.github.io/pib_feed/news_international/feed.xml" htmlUrl="https://newsonair.gov.in/category/international/"/>
+        <outline type="rss" text="Business - News On AIR" title="Business - News On AIR" xmlUrl="https://nappingcats.github.io/pib_feed/news_business/feed.xml" htmlUrl="https://newsonair.gov.in/category/business/"/>
+        <outline type="rss" text="Sports - News On AIR" title="Sports - News On AIR" xmlUrl="https://nappingcats.github.io/pib_feed/news_sports/feed.xml" htmlUrl="https://newsonair.gov.in/category/sports/"/>
+        <outline type="rss" text="Regional - News On AIR" title="Regional - News On AIR" xmlUrl="https://nappingcats.github.io/pib_feed/news_regional/feed.xml" htmlUrl="https://newsonair.gov.in/category/regional-news/"/>
+        <outline type="rss" text="Elections - News On AIR" title="Elections - News On AIR" xmlUrl="https://nappingcats.github.io/pib_feed/news_elections/feed.xml" htmlUrl="https://newsonair.gov.in/category/elections/"/>
+        <outline type="rss" text="Miscellaneous - News On AIR" title="Miscellaneous - News On AIR" xmlUrl="https://nappingcats.github.io/pib_feed/news_miscellaneous/feed.xml" htmlUrl="https://newsonair.gov.in/category/miscellaneous/"/>
+        <outline type="rss" text="Morning News Bulletin - News On AIR" title="Morning News Bulletin - News On AIR" xmlUrl="https://nappingcats.github.io/pib_feed/bulletin_morning/feed.xml" htmlUrl="https://newsonair.gov.in/bulletins-detail-category/morning-news/"/>
+        <outline type="rss" text="Midday News Bulletin - News On AIR" title="Midday News Bulletin - News On AIR" xmlUrl="https://nappingcats.github.io/pib_feed/bulletin_midday/feed.xml" htmlUrl="https://newsonair.gov.in/bulletins-detail-category/midday-news/"/>
+        <outline type="rss" text="Evening News Bulletin - News On AIR" title="Evening News Bulletin - News On AIR" xmlUrl="https://nappingcats.github.io/pib_feed/bulletin_evening/feed.xml" htmlUrl="https://newsonair.gov.in/bulletins-detail-category/evening-news/"/>
+        <outline type="rss" text="Parikrama - News On AIR" title="Parikrama - News On AIR" xmlUrl="https://nappingcats.github.io/pib_feed/parikrama/feed.xml" htmlUrl="https://newsonair.gov.in/bulletins-detail-category/parikrama/"/>
+      </outline>
+      <outline text="Current Affairs (Vision IAS / Made Easy / NextIAS)" title="Current Affairs (Vision IAS / Made Easy / NextIAS)">
+        <outline type="rss" text="PT 365 - Vision IAS" title="PT 365 - Vision IAS" xmlUrl="https://nappingcats.github.io/pib_feed/visionias-pt-365/feed.xml" htmlUrl="https://visionias.in/current-affairs/downloads/pt-365"/>
+        <outline type="rss" text="Mains 365 - Vision IAS" title="Mains 365 - Vision IAS" xmlUrl="https://nappingcats.github.io/pib_feed/visionias-mains-365/feed.xml" htmlUrl="https://visionias.in/current-affairs/downloads/mains-365"/>
+        <outline type="rss" text="Weekly Current Affairs - Made Easy" title="Weekly Current Affairs - Made Easy" xmlUrl="https://nappingcats.github.io/pib_feed/madeeasy-weekly/feed.xml" htmlUrl="https://www.madeeasy.in/weekly-current-affairs"/>
+        <outline type="rss" text="Monthly Current Affairs Magazine - NextIAS" title="Monthly Current Affairs Magazine - NextIAS" xmlUrl="https://nappingcats.github.io/pib_feed/nextias-magazine/feed.xml" htmlUrl="https://www.nextias.com/current-affairs-magazine"/>
+      </outline>
+      <outline text="MyGov" title="MyGov">
+        <outline type="rss" text="Bharat Matters - MyGov" title="Bharat Matters - MyGov" xmlUrl="https://nappingcats.github.io/pib_feed/mygov_bharat_matters/feed.xml" htmlUrl="https://www.mygov.in/bharat-matters"/>
+        <outline type="rss" text="Pulse Newsletter - MyGov" title="Pulse Newsletter - MyGov" xmlUrl="https://nappingcats.github.io/pib_feed/mygov_pulse/feed.xml" htmlUrl="https://www.mygov.in/pulse-newsletter"/>
+        <outline type="rss" text="Read Mann Ki Baat - MyGov" title="Read Mann Ki Baat - MyGov" xmlUrl="https://nappingcats.github.io/pib_feed/mygov_mann_ki_baat/feed.xml" htmlUrl="https://www.mygov.in/read-mkb-more"/>
+      </outline>
+      <outline text="Supreme Court Observer" title="Supreme Court Observer">
+        <outline type="rss" text="Cases - Supreme Court Observer" title="Cases - Supreme Court Observer" xmlUrl="https://nappingcats.github.io/pib_feed/scobserver-cases/feed.xml" htmlUrl="https://www.scobserver.in/cases/"/>
+        <outline type="rss" text="Journal - Supreme Court Observer" title="Journal - Supreme Court Observer" xmlUrl="https://nappingcats.github.io/pib_feed/scobserver-journal/feed.xml" htmlUrl="https://www.scobserver.in/journal/"/>
+        <outline type="rss" text="Reports - Supreme Court Observer" title="Reports - Supreme Court Observer" xmlUrl="https://nappingcats.github.io/pib_feed/scobserver-reports/feed.xml" htmlUrl="https://www.scobserver.in/reports/"/>
+        <outline type="rss" text="Court Events - Supreme Court Observer" title="Court Events - Supreme Court Observer" xmlUrl="https://nappingcats.github.io/pib_feed/scobserver-court-events/feed.xml" htmlUrl="https://www.scobserver.in/court_events/"/>
+        <outline type="rss" text="Law Reports (SCOLR) - Supreme Court Observer" title="Law Reports (SCOLR) - Supreme Court Observer" xmlUrl="https://nappingcats.github.io/pib_feed/scobserver-scolr/feed.xml" htmlUrl="https://www.scobserver.in/supreme-court-observer-law-reports-scolr/"/>
+      </outline>
+      <outline text="PRS Legislative Research" title="PRS Legislative Research">
+        <outline type="rss" text="Bills - PRS" title="Bills - PRS" xmlUrl="https://nappingcats.github.io/pib_feed/prs-bills/feed.xml" htmlUrl="https://prsindia.org/billtrack"/>
+        <outline type="rss" text="Acts - PRS" title="Acts - PRS" xmlUrl="https://nappingcats.github.io/pib_feed/prs-acts/feed.xml" htmlUrl="https://prsindia.org/acts/parliament"/>
+        <outline type="rss" text="Budgets - PRS" title="Budgets - PRS" xmlUrl="https://nappingcats.github.io/pib_feed/prs-budgets/feed.xml" htmlUrl="https://prsindia.org/budgets/parliament"/>
+        <outline type="rss" text="Vital Stats - PRS" title="Vital Stats - PRS" xmlUrl="https://nappingcats.github.io/pib_feed/prs-vital-stats/feed.xml" htmlUrl="https://prsindia.org/parliamenttrack/vital-stats"/>
+        <outline type="rss" text="Monthly Policy Review - PRS" title="Monthly Policy Review - PRS" xmlUrl="https://nappingcats.github.io/pib_feed/prs-policy-reviews/feed.xml" htmlUrl="https://prsindia.org/policy/monthly-policy-review"/>
+        <outline type="rss" text="Discussion Papers - PRS" title="Discussion Papers - PRS" xmlUrl="https://nappingcats.github.io/pib_feed/prs-discussion-papers/feed.xml" htmlUrl="https://prsindia.org/policy/discussion-papers"/>
+        <outline type="rss" text="Report Summaries - PRS" title="Report Summaries - PRS" xmlUrl="https://nappingcats.github.io/pib_feed/prs-report-summaries/feed.xml" htmlUrl="https://prsindia.org/policy/report-summaries"/>
+      </outline>
+      <outline text="MP-IDSA (Institute for Defence Studies and Analyses)" title="MP-IDSA (Institute for Defence Studies and Analyses)">
+        <outline type="rss" text="Comments - MP-IDSA" title="Comments - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-comments/feed.xml" htmlUrl="https://idsa.in/publication-type/comments"/>
+        <outline type="rss" text="Issue Briefs - MP-IDSA" title="Issue Briefs - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-issue-briefs/feed.xml" htmlUrl="https://idsa.in/publication-type/issuebrief"/>
+        <outline type="rss" text="Occasional Papers - MP-IDSA" title="Occasional Papers - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-occasional-papers/feed.xml" htmlUrl="https://idsa.in/publication-type/occasionalpaper"/>
+        <outline type="rss" text="Monographs - MP-IDSA" title="Monographs - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-monographs/feed.xml" htmlUrl="https://idsa.in/publication-type/monograph"/>
+        <outline type="rss" text="Books - MP-IDSA" title="Books - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-books/feed.xml" htmlUrl="https://idsa.in/publication-type/book"/>
+        <outline type="rss" text="Policy Briefs - MP-IDSA" title="Policy Briefs - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-policy-briefs/feed.xml" htmlUrl="https://idsa.in/publication-type/policybrief"/>
+        <outline type="rss" text="Backgrounders - MP-IDSA" title="Backgrounders - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-backgrounders/feed.xml" htmlUrl="https://idsa.in/publication-type/backgrounder"/>
+        <outline type="rss" text="West Asia War Analyses - MP-IDSA" title="West Asia War Analyses - MP-IDSA" xmlUrl="https://nappingcats.github.io/pib_feed/idsa-west-asia-war-analyses/feed.xml" htmlUrl="https://idsa.in/publication-type/west-asia-war-analyses"/>
+      </outline>
+      <outline text="EAC-PM (Economic Advisory Council to the PM)" title="EAC-PM (Economic Advisory Council to the PM)">
+        <outline type="rss" text="Reports - EAC-PM" title="Reports - EAC-PM" xmlUrl="https://nappingcats.github.io/pib_feed/eacpm-reports/feed.xml" htmlUrl="https://eacpm.gov.in/reports/"/>
+        <outline type="rss" text="Articles - EAC-PM" title="Articles - EAC-PM" xmlUrl="https://nappingcats.github.io/pib_feed/eacpm-articles/feed.xml" htmlUrl="https://eacpm.gov.in/whats-new/"/>
+        <outline type="rss" text="In the News - EAC-PM" title="In the News - EAC-PM" xmlUrl="https://nappingcats.github.io/pib_feed/eacpm-news/feed.xml" htmlUrl="https://eacpm.gov.in/news/"/>
+      </outline>
+      <outline text="The Economist (unofficial, full-text)" title="The Economist (unofficial, full-text)">
+        <outline type="rss" text="Economic &amp; financial indicators - Economist" title="Economic &amp; financial indicators - Economist" xmlUrl="https://nappingcats.github.io/pib_feed/economist-indicators/feed.xml" htmlUrl="https://www.economist.com/topics/economic-and-financial-indicators"/>
+        <outline type="rss" text="Schools brief - Economist" title="Schools brief - Economist" xmlUrl="https://nappingcats.github.io/pib_feed/economist-schools-brief/feed.xml" htmlUrl="https://www.economist.com/schools-brief"/>
+        <outline type="rss" text="Finance &amp; economics - Economist" title="Finance &amp; economics - Economist" xmlUrl="https://nappingcats.github.io/pib_feed/economist-finance-and-economics/feed.xml" htmlUrl="https://www.economist.com/finance-and-economics"/>
+      </outline>
+      <outline text="Project Syndicate (unofficial, full-text)" title="Project Syndicate (unofficial, full-text)">
+        <outline type="rss" text="Commentaries - Project Syndicate" title="Commentaries - Project Syndicate" xmlUrl="https://nappingcats.github.io/pib_feed/project-syndicate/feed.xml" htmlUrl="https://www.project-syndicate.org/"/>
+      </outline>
+      <outline text="The Indian Express (unofficial, full-text)" title="The Indian Express (unofficial, full-text)">
+        <outline type="rss" text="Explained - Indian Express" title="Explained - Indian Express" xmlUrl="https://nappingcats.github.io/pib_feed/indianexpress-explained/feed.xml" htmlUrl="https://indianexpress.com/section/explained/"/>
+        <outline type="rss" text="Opinion - Indian Express" title="Opinion - Indian Express" xmlUrl="https://nappingcats.github.io/pib_feed/indianexpress-opinion/feed.xml" htmlUrl="https://indianexpress.com/section/opinion/"/>
+        <outline type="rss" text="UPSC Essentials - Indian Express" title="UPSC Essentials - Indian Express" xmlUrl="https://nappingcats.github.io/pib_feed/upsc-essentials/feed.xml" htmlUrl="https://epaper.indianexpress.com/t/23812/latest"/>
+        <outline type="rss" text="Delhi Edition - Indian Express" title="Delhi Edition - Indian Express" xmlUrl="https://nappingcats.github.io/pib_feed/indianexpress-delhi/feed.xml" htmlUrl="https://epaper.indianexpress.com/t/226/latest"/>
+        <outline type="rss" text="EYE - Indian Express" title="EYE - Indian Express" xmlUrl="https://nappingcats.github.io/pib_feed/indianexpress-eye/feed.xml" htmlUrl="https://epaper.indianexpress.com/t/269/latest"/>
+      </outline>
+      <outline text="India Today (unofficial, full-text)" title="India Today (unofficial, full-text)">
+        <outline type="rss" text="Magazine - India Today" title="Magazine - India Today" xmlUrl="https://nappingcats.github.io/pib_feed/indiatoday-magazine/feed.xml" htmlUrl="https://www.indiatoday.in/magazine"/>
+      </outline>
+      <outline text="NITI Aayog (unofficial, PDF)" title="NITI Aayog (unofficial, PDF)">
+        <outline type="rss" text="Division Reports - NITI Aayog" title="Division Reports - NITI Aayog" xmlUrl="https://nappingcats.github.io/pib_feed/niti-reports/feed.xml" htmlUrl="https://www.niti.gov.in/publications/division-reports"/>
+        <outline type="rss" text="Working Papers - NITI Aayog" title="Working Papers - NITI Aayog" xmlUrl="https://nappingcats.github.io/pib_feed/niti-working-papers/feed.xml" htmlUrl="https://www.niti.gov.in/publications/working-papers"/>
+        <outline type="rss" text="Research Papers - NITI Aayog" title="Research Papers - NITI Aayog" xmlUrl="https://nappingcats.github.io/pib_feed/niti-research-papers/feed.xml" htmlUrl="https://www.niti.gov.in/publications/research-paper"/>
+        <outline type="rss" text="Policy Papers - NITI Aayog" title="Policy Papers - NITI Aayog" xmlUrl="https://nappingcats.github.io/pib_feed/niti-policy-papers/feed.xml" htmlUrl="https://www.niti.gov.in/publications/policy-and-research/policy-paper"/>
+        <outline type="rss" text="Annual Reports - NITI Aayog" title="Annual Reports - NITI Aayog" xmlUrl="https://nappingcats.github.io/pib_feed/niti-annual-reports/feed.xml" htmlUrl="https://www.niti.gov.in/publication/annual-report"/>
+      </outline>
+  </body>
+</opml>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>PRS Legislative Research feeds (unofficial)</title>
+  </head>
+  <body>
+      <outline text="PRS Legislative Research" title="PRS Legislative Research">
+        <outline type="rss" text="Bills - PRS" title="Bills - PRS" xmlUrl="https://nappingcats.github.io/pib_feed/prs-bills/feed.xml" htmlUrl="https://prsindia.org/billtrack"/>
+        <outline type="rss" text="Acts - PRS" title="Acts - PRS" xmlUrl="https://nappingcats.github.io/pib_feed/prs-acts/feed.xml" htmlUrl="https://prsindia.org/acts/parliament"/>
+        <outline type="rss" text="Budgets - PRS" title="Budgets - PRS" xmlUrl="https://nappingcats.github.io/pib_feed/prs-budgets/feed.xml" htmlUrl="https://prsindia.org/budgets/parliament"/>
+        <outline type="rss" text="Vital Stats - PRS" title="Vital Stats - PRS" xmlUrl="https://nappingcats.github.io/pib_feed/prs-vital-stats/feed.xml" htmlUrl="https://prsindia.org/parliamenttrack/vital-stats"/>
+        <outline type="rss" text="Monthly Policy Review - PRS" title="Monthly Policy Review - PRS" xmlUrl="https://nappingcats.github.io/pib_feed/prs-policy-reviews/feed.xml" htmlUrl="https://prsindia.org/policy/monthly-policy-review"/>
+        <outline type="rss" text="Discussion Papers - PRS" title="Discussion Papers - PRS" xmlUrl="https://nappingcats.github.io/pib_feed/prs-discussion-papers/feed.xml" htmlUrl="https://prsindia.org/policy/discussion-papers"/>
+        <outline type="rss" text="Report Summaries - PRS" title="Report Summaries - PRS" xmlUrl="https://nappingcats.github.io/pib_feed/prs-report-summaries/feed.xml" htmlUrl="https://prsindia.org/policy/report-summaries"/>
+      </outline>
+  </body>
+</opml>
