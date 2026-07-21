@@ -20,6 +20,7 @@ index.html, merged with the published feed to retain history.
 from __future__ import annotations
 
 import datetime as dt
+import hashlib
 import html
 import os
 import re
@@ -126,7 +127,12 @@ def parse_page(page: str) -> list[dict]:
                 date = dt.datetime.fromtimestamp(int(em.group(1)), tz=dt.timezone.utc).astimezone(IST)
             except (ValueError, OSError):
                 date = None
-        item_id = int(em.group(1)) if em else abs(hash(pdf)) % (10**10)
+        # stable across runs (hash() is salted per-process)
+        item_id = (
+            int(em.group(1))
+            if em
+            else int(hashlib.md5(pdf.encode()).hexdigest(), 16) % (10**10)
+        )
         out.append({"id": item_id, "pdf": pdf, "link": link, "title": title, "date": date})
     return out
 

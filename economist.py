@@ -303,9 +303,11 @@ def parse_iso(s: str | None) -> dt.datetime | None:
     if not s:
         return None
     try:
-        return dt.datetime.fromisoformat(s.replace("Z", "+00:00"))
+        d = dt.datetime.fromisoformat(s.replace("Z", "+00:00"))
     except ValueError:
         return None
+    # a naive datetime would break sorting against the aware published dates
+    return d if d.tzinfo else d.replace(tzinfo=dt.timezone.utc)
 
 
 # --- feed I/O -----------------------------------------------------------------

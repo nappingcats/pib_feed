@@ -93,10 +93,10 @@ ROOT_YR_PEM = Path(__file__).with_name("certs") / "isrg-root-yr.pem"
 def make_session() -> requests.Session:
     s = requests.Session()
     s.headers.update({"User-Agent": UA, "Accept-Language": "en"})
-    bundle = tempfile.NamedTemporaryFile(delete=False, suffix=".pem")
-    bundle.write(Path(certifi.where()).read_bytes() + ROOT_YR_PEM.read_bytes())
-    bundle.close()
-    s.verify = bundle.name
+    # stable path so repeated runs reuse one file instead of leaking temp files
+    bundle = Path(tempfile.gettempdir()) / "eacpm-ca-bundle.pem"
+    bundle.write_bytes(Path(certifi.where()).read_bytes() + ROOT_YR_PEM.read_bytes())
+    s.verify = str(bundle)
     return s
 
 

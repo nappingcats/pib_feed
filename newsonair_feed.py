@@ -31,6 +31,7 @@ previously-published copy so history grows past the source's rolling window.
 from __future__ import annotations
 
 import datetime as dt
+import hashlib
 import html
 import os
 import re
@@ -363,7 +364,12 @@ def scrape_bulletin(session: requests.Session, feed: dict, url: str, list_date: 
         item_id = int(pid.group(1))
     else:  # fall back to the trailing number in the slug
         sm = re.search(r"-(\d+)/?$", url)
-        item_id = int(sm.group(1)) if sm else abs(hash(url)) % (10**9)
+        # stable across runs (hash() is salted per-process)
+        item_id = (
+            int(sm.group(1))
+            if sm
+            else int(hashlib.md5(url.encode()).hexdigest(), 16) % (10**9)
+        )
     day = date.strftime("%d %b %Y") if date else list_date
     label = feed["title"].split(" - ")[0].strip().replace(" Bulletin", "")
     return {

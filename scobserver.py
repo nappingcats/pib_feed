@@ -362,8 +362,11 @@ def run_feed(session: requests.Session, feed: dict, cutoff: dt.datetime) -> int:
 def main() -> int:
     session = make_session()
     now = dt.datetime.now(UTC)
-    # Rolling window floor: N years back from today.
-    cutoff = now.replace(year=now.year - WINDOW_YEARS)
+    # Rolling window floor: N years back from today (Feb 29 clamps to Feb 28).
+    try:
+        cutoff = now.replace(year=now.year - WINDOW_YEARS)
+    except ValueError:
+        cutoff = now.replace(year=now.year - WINDOW_YEARS, day=28)
     print(f"scobserver: window >= {cutoff.date()} ({WINDOW_YEARS}y)")
     counts: dict[str, int] = {}
     for feed in FEEDS:

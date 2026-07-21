@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import base64
 import datetime as dt
+import hashlib
 import html
 import json
 import os
@@ -129,7 +130,12 @@ def collect_made_easy(session: requests.Session) -> list[dict]:
         title = html.unescape(m.group("pd")).strip()
         # stable id from the numeric prefix of the filename (e.g. 2247purl_...)
         idm = re.match(r"(\d+)", ft)
-        item_id = int(idm.group(1)) if idm else abs(hash(ft)) % (10**9)
+        # stable across runs (hash() is salted per-process)
+        item_id = (
+            int(idm.group(1))
+            if idm
+            else int(hashlib.md5(ft.encode()).hexdigest(), 16) % (10**9)
+        )
         date = None
         dm = DATE_RANGE_RE.search(title)
         if dm:  # use the range's end date
