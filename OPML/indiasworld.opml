@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>India's World feed (unofficial)</title>
+  </head>
+  <body>
+      <outline text="India's World" title="India's World">
+        <outline type="rss" text="India's World — Explainers" title="India's World — Explainers" xmlUrl="https://nappingcats.github.io/pib_feed/indiasworld/feed.xml" htmlUrl="https://indiasworld.in"/>
+      </outline>
+  </body>
+</opml>

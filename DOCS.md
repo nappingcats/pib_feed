@@ -843,10 +843,58 @@ The feed list is the `FEEDS` table in `ipcs.py`.
 
 ---
 
+# India's World feed (unofficial)
+
+A full-text RSS feed of the **latest 50 explainers** from
+[India's World](https://indiasworld.in), built by `indiasworld.py`.
+
+| Feed | What | GitHub Pages |
+|------|------|------|
+| India's World — Explainers | latest 50 full-text explainers | [feed.xml](https://nappingcats.github.io/pib_feed/indiasworld/feed.xml) |
+
+## Why this exists
+
+India's World is a WordPress site whose built-in `/feed/` is **excerpt-only**.
+Its WordPress REST API (`wp-json/wp/v2/posts`), however, returns the **full
+rendered body** (`content.rendered`) right in the listing.
+
+## How it works
+
+`indiasworld.py` walks the REST listing for the Explainers category (`318`)
+newest-first (50 posts/page, embedding author + category names), stopping after
+two consecutive already-published pages or once `MAX_FETCH` new posts are taken.
+No per-article fetch is needed — the full body is in the listing. The feed keeps
+the latest 50 explainers, with `pubDate` shown in IST.
+
+## Configuration (env vars)
+
+| Var | Default | Meaning |
+|-----|---------|---------|
+| `INDIASWORLD_PER_PAGE` | `50` | Posts per REST page |
+| `INDIASWORLD_MAX_PAGES` | `10` | REST pages walked per run |
+| `INDIASWORLD_MAX_FETCH` | `120` | Max new posts taken per run |
+| `INDIASWORLD_PUBLISHED_BASE_URL` | – | Live-site base for history-merge |
+| `INDIASWORLD_OUT_DIR` | `public` | Output directory |
+
+## Caveats
+
+- Some posts are members-only behind an *Ultimate Membership Pro* paywall: the
+  REST body (and the live page) carry only the free teaser, then an
+  `ihc-locker-wrap` login form in place of the rest. The full text is not public
+  anywhere and has no client-side bypass (Bypass Paywalls lists the site as
+  `nofix`). Explainers are barely affected — only the 4 oldest (early 2025) are
+  walled, so the latest-50 feed is currently all full-body. Any walled item is
+  carried with its public teaser and flagged "Members-only"; the login form is
+  stripped so it never leaks into the feed.
+- Depends on the WordPress REST API staying open.
+- Unofficial and unaffiliated; content © India's World.
+
+---
+
 # OPML
 
 Ready-to-import OPML bundles live in `OPML/`: `pib.opml`, `newsonair.opml`,
 `current-affairs.opml`, `mygov.opml`, `scobserver.opml`, `prsindia.opml`,
 `idsa.opml`, `eacpm.opml`, `economist.opml`, `projectsyndicate.opml`,
 `indianexpress.opml` (includes UPSC Essentials), `indiatoday.opml`, `niti.opml`,
-`ipcs.opml`, and `all.opml` (every feed, grouped).
+`ipcs.opml`, `indiasworld.opml`, and `all.opml` (every feed, grouped).

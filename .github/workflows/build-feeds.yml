@@ -157,6 +157,11 @@ jobs:
           IPCS_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
         run: python ipcs.py
 
+      - name: Build India's World feed
+        env:
+          INDIASWORLD_PUBLISHED_BASE_URL: "${{ steps.pages.outputs.base_url }}"
+        run: python indiasworld.py
+
       - name: Mirror PDFs to the archive release
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"

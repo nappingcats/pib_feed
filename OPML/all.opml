@@ -75,5 +75,8 @@
       <outline text="IPCS (Institute of Peace and Conflict Studies)" title="IPCS (Institute of Peace and Conflict Studies)">
         <outline type="rss" text="Commentaries - IPCS" title="Commentaries - IPCS" xmlUrl="https://nappingcats.github.io/pib_feed/ipcs-commentaries/feed.xml" htmlUrl="https://www.ipcs.org/commentaries.php"/>
       </outline>
+      <outline text="India's World" title="India's World">
+        <outline type="rss" text="India's World — Explainers" title="India's World — Explainers" xmlUrl="https://nappingcats.github.io/pib_feed/indiasworld/feed.xml" htmlUrl="https://indiasworld.in"/>
+      </outline>
   </body>
 </opml>
