@@ -158,8 +158,11 @@ def parse_rfc822(s: str) -> dt.datetime | None:
 
 # --- article body -------------------------------------------------------------
 OG_IMAGE_RE = re.compile(r'<meta property="og:image" content="([^"]+)"')
-# Commentary prose paragraphs are the only ones tagged with data-line-id.
-BODY_PARA_RE = re.compile(r'<p data-line-id="[^"]*">(.*?)</p>', re.S)
+# Commentary prose paragraphs are the only <p> tagged with data-line-id. The
+# site wraps the body in a "pwa" editor layer, so the tag now carries extra
+# attributes (pwa2-uuid, pwa-fake-editor, spellcheck) — match data-line-id
+# anywhere in the tag rather than assuming it is the sole attribute.
+BODY_PARA_RE = re.compile(r'<p [^>]*?data-line-id="[^"]*"[^>]*>(.*?)</p>', re.S)
 # Keep inline anchors/emphasis but drop any stray inline scripts/styles.
 STRIP_RE = re.compile(r"<(script|style)[^>]*>.*?</\1>", re.S | re.I)
 
