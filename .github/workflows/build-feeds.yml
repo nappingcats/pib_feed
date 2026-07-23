@@ -57,7 +57,7 @@ jobs:
       # from aborting the rest (e.g. PIB's TLS cert lapsing). The real outcome is
       # captured per-step id and re-checked by the final gate so the run still
       # goes red — and notifies — when any feed fails.
-      - name: Build feeds
+      - name: Build PIB feed
         id: pib
         continue-on-error: true
         env:
