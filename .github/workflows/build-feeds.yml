@@ -1,4 +1,4 @@
-name: Build PIB + News On AIR + Current Affairs RSS feeds
+name: Build RSS Feeds
 
 on:
   schedule:
